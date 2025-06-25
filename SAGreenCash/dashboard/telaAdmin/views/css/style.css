@@ -1,0 +1,1554 @@
+/* =========== Google Fonts ============ */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+/* =============== Globals ============== */
+* {
+  font-family: "Ubuntu", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a{
+  text-decoration: none ;
+}
+
+a[onclick] {
+  cursor: pointer;
+}
+
+:root {
+  --blue: #2a2185;
+  --white: #fff;
+  --gray: #f5f5f5;
+  --black1: #383735 ;
+  --black2: #35332f;
+  --green: #4caf50;
+  --red: red;
+  --green2: #4caf50;
+  --green3: #4caf50;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+/* =============== Menu Navegação ================ */
+.navigation {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  background: var(--black1);
+  border-left: 10px solid var(--black1);
+  transition: 0.5s;
+  overflow: hidden;
+}
+.navigation.active {
+  width: 80px;
+}
+/* ESSENCIAL: Esconde os textos do menu quando navigation está .active */
+.navigation.active ul li a .title {
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: opacity 0.3s, visibility 0.3s, width 0.3s;
+}
+
+/* Mantém largura reduzida do menu quando .active */
+.navigation.active {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+  transition: width 0.5s;
+}
+
+/* Garante alinhamento dos ícones centralizados no menu recolhido */
+.navigation ul li a .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navigation ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.navigation ul li {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+.navigation ul li:hover,
+.navigation ul li.hovered {
+  background-color: var(--green3);
+}
+
+.navigation ul li:nth-child(1) {
+  margin-bottom: 40px;
+  pointer-events: none;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: var(--white);
+}
+.navigation ul li:hover a,
+.navigation ul li.hovered a {
+  color: var(--white);
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 75px;
+  text-align: center;
+}
+.navigation ul li a .icon ion-icon {
+  font-size: 1.75rem;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding: 0 10px;
+  height: 60px;
+  line-height: 60px;
+  text-align: start;
+  white-space: nowrap;
+}
+
+/*ajuste do logo no menu*/
+.icon img {
+  margin-top: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+/* --------- Curva de fora do menu navegação ---------- */
+.navigation ul li:hover a::before,
+.navigation ul li.hovered a::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px 35px 0 10px var(--green3);
+  pointer-events: none;
+}
+.navigation ul li:hover a::after,
+.navigation ul li.hovered a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px -35px 0 10px var(--green3);
+  pointer-events: none;
+}
+
+/* ===================== Principal ===================== */
+html, body {
+  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  /* Gradiente exato do .main */
+  background: linear-gradient(
+    120deg,
+    #f5f5f5 0%,
+    #d1d1d1 25%,
+    #a8a8a8 65%,
+    #d1d1d1 85%,
+    #f5f5f5 100%
+  ) !important;
+}
+
+.main {
+  position: relative; /* <- troque de absolute para relative */
+  width: calc(100% - 300px);
+  margin-left: 300px;
+  min-height: 100vh;
+  background: linear-gradient(
+    120deg,
+    #f5f5f5 0%,
+    #d1d1d1 25%,
+    #a8a8a8 65%,
+    #d1d1d1 85%,
+    #f5f5f5 100%
+  );
+  transition: margin-left 0.5s, width 0.5s;
+}
+
+.main.active {
+  width: calc(100% - 80px);
+  margin-left: 80px;
+}
+
+.topbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.toggle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.search {
+  position: relative;
+  width: 400px;
+  margin: 0 10px;
+}
+
+.search label {
+  position: relative;
+  width: 100%;
+}
+
+.search label input {
+  width: 100%;
+  height: 40px;
+  border-radius: 40px;
+  padding: 5px 20px;
+  padding-left: 35px;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid var(--black2);
+}
+
+.search label ion-icon {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  font-size: 1.2rem;
+}
+
+.user {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.user img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ============================= */
+/* ====== CORTOES CARD AREA ===== */
+/* ============================= */
+
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+  margin-bottom: 20px;
+}
+
+.cardBox .card {
+  background: #3a3a3a;
+  color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.12),
+      0 1px 2px rgba(0, 0, 0, 0.08);
+  padding: 32px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: none;
+  min-width: auto;
+  position: relative;
+  transition: all 0.2s ease;
+  border: 1px solid #4a4a4a;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.cardBox .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #22c55e;
+  opacity: 1;
+}
+
+.cardBox .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.25),
+      0 2px 4px rgba(0, 0, 0, 0.15);
+  border-color: #5a5a5a;
+}
+
+.cardBox .card:hover::before {
+  opacity: 1;
+}
+
+.cardBox .card .card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.cardBox .card .numbers {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.cardBox .card .cardName {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #d1d5db;
+  line-height: 1.3;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  margin-top: 0;
+}
+
+.cardBox .card .iconBx {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+  font-size: 1.8rem;
+  color: #d1d5db;
+}
+
+.cardBox .card:hover .iconBx {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Variações específicas para diferentes tipos de cards */
+.cardBox .card.usuarios::before {
+  background: #3b82f6;
+}
+
+.cardBox .card.usuarios .numbers {
+  color: #ffffff;
+}
+
+.cardBox .card.usuarios .iconBx {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.cardBox .card.atendimentos::before {
+  background: #10b981;
+}
+
+.cardBox .card.atendimentos .numbers {
+  color: #ffffff;
+}
+
+.cardBox .card.atendimentos .iconBx {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.cardBox .card.andamento::before {
+  background: #f59e0b;
+}
+
+.cardBox .card.andamento .numbers {
+  color: #ffffff;
+}
+
+.cardBox .card.andamento .iconBx {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+/* Responsividade aprimorada */
+@media (max-width: 768px) {
+  .cardBox {
+      grid-template-columns: 1fr;
+      padding: 24px 16px;
+      grid-gap: 16px;
+      margin-bottom: 32px;
+  }
+  
+  .cardBox .card {
+      padding: 24px;
+      gap: 18px;
+  }
+  
+  .cardBox .card .numbers {
+      font-size: 2rem;
+  }
+  
+  .cardBox .card .cardName {
+      font-size: 0.8rem;
+  }
+  
+  .cardBox .card .iconBx {
+      width: 48px;
+      height: 48px;
+      font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardBox {
+      padding: 20px 16px;
+      grid-gap: 12px;
+  }
+  
+  .cardBox .card {
+      padding: 20px;
+      gap: 16px;
+  }
+  
+  .cardBox .card .numbers {
+      font-size: 1.875rem;
+  }
+  
+  .cardBox .card .cardName {
+      font-size: 0.75rem;
+  }
+  
+  .cardBox .card .iconBx {
+      width: 44px;
+      height: 44px;
+      font-size: 1.5rem;
+  }
+}
+
+/* Painel: proporção melhor entre as colunas */
+.details {
+  width: 100%;
+  padding: 24px 0;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  grid-gap: 28px;
+  margin-top: 12px;
+}
+
+.details .recentOrders {
+  background: var(--white);
+  padding: 18px 10px 16px 10px;
+  border-radius: 14px;
+  box-shadow: 0 2px 14px 0 rgba(44,62,80,0.07);
+  border: 2px solid #b8ebc9;
+  overflow-x: auto;
+  min-width: 0;
+}
+
+/* Cabeçalho */
+.details .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.cardHeader h2 {
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  margin: 0;
+  letter-spacing: -1px;
+}
+.cardHeader .btn1 {
+  background: var(--green);
+  color: var(--white);
+  border-radius: 6px;
+  padding: 6px 13px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  margin-left: 8px;
+  white-space: nowrap;
+  transition: background 0.13s;
+}
+.cardHeader .btn1:hover {
+  background: var(--green-dark);
+}
+
+/* Botões e selects da tabela */
+.details .btn1 {
+  background: var(--green);
+  color: var(--white);
+  border-radius: 5px;
+  padding: 4px 10px;
+  font-size: 0.93rem;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  margin-left: 2px;
+  margin-top: 2px;
+  white-space: nowrap;
+  transition: background 0.13s;
+  box-shadow: 0 2px 3px 0 rgb(60 200 100 / 10%);
+}
+.details .btn1:hover {
+  background: var(--green-dark);
+}
+.edit-prio-form select {
+  max-width: 68px;
+  font-size: 0.93em;
+  padding: 2px 4px;
+  margin-bottom: 3px;
+  border-radius: 4px;
+  border: 1px solid #c7e4d1;
+  background: #fafafa;
+}
+
+/* Tabela */
+.details .recentOrders table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+  background: transparent;
+  margin: 0;
+  font-size: 0.95em;
+}
+
+/* Cabeçalho e células: NÃO corta texto ou títulos, quebra natural */
+.details .recentOrders table th,
+.details .recentOrders table td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px 4px;
+  color: var(--text-primary);
+  background: var(--gray-bg);
+  text-align: left;
+  vertical-align: middle;
+  font-size: 1em;
+  font-weight: 400;
+  white-space: normal !important;      /* Permite o texto ocupar várias linhas */
+  word-break: break-word !important;   /* Quebra palavras grandes se necessário */
+  overflow-wrap: anywhere !important;  /* Quebra onde for preciso, até no meio de palavras longas */
+  max-width: 160px;
+}
+
+.details .recentOrders table thead th {
+  font-weight: 700;
+  background: var(--header-bg);
+  font-size: 1.03em;
+  border-bottom: 2px solid #aee4c5;
+  letter-spacing: 0.01em;
+}
+
+/* Zebra alternada */
+.details .recentOrders table tbody tr:nth-child(even) td {
+  background: var(--gray-bg-alt);
+}
+
+.details .recentOrders table tbody tr:hover td {
+  background: #e7f9f0 !important;
+  color: var(--text-primary);
+}
+
+/* Largura flexível, facilita colunas iguais nos dois cards */
+.details .recentOrders table th:nth-child(1),
+.details .recentOrders table td:nth-child(1) { width: 16%; }
+.details .recentOrders table th:nth-child(2),
+.details .recentOrders table td:nth-child(2) { width: 13%; }
+.details .recentOrders table th:nth-child(3),
+.details .recentOrders table td:nth-child(3) { width: 21%; }
+.details .recentOrders table th:nth-child(4),
+.details .recentOrders table td:nth-child(4) { width: 17%; }
+.details .recentOrders table th:nth-child(5),
+.details .recentOrders table td:nth-child(5) { width: 13%; }
+.details .recentOrders table th:nth-child(6),
+.details .recentOrders table td:nth-child(6) { width: 20%; text-align: center; }
+
+/* Prioridade badges */
+span[class^="prioridade-"] {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.93em;
+  margin-bottom: 3px;
+  background: #e0e0e0;
+  letter-spacing: 0.01em;
+}
+span.prioridade-alta    { background: var(--red); color: #fff; }
+span.prioridade-média   { background: var(--yellow); color: #a67c00; }
+span.prioridade-baixa   { background: #baf3c7; color: var(--low); }
+
+/* Responsivo: tabelas SEM barra de rolagem lateral! */
+@media (max-width: 1100px) {
+  .details {
+    grid-template-columns: 1fr;
+    padding: 10px 0;
+  }
+  .details .recentOrders {
+    margin-bottom: 18px;
+    padding: 8px 1px;
+  }
+  .details .recentOrders table {
+    font-size: 0.91em;
+  }
+  .details .recentOrders table th, 
+  .details .recentOrders table td {
+    padding: 6px 2px;
+    font-size: 0.91em;
+    max-width: 100px;
+  }
+}
+/* ====================== Modal ========================== */
+
+.modal-overlay {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal {
+  background: var(--gray);
+  padding: 3rem;
+  position: relative;
+  z-index: 1;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 80%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+#form {
+  max-width: 100%;
+}
+
+#form h2 {
+  margin-top: 10px;
+  font-size: 30px;
+}
+
+.input-group {
+  margin-top: 20px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 20px; /* Adjust label font size */
+}
+
+.input-group input {
+  width: 100%;
+  font-size: 18px; /* Adjust input font size */
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+  cursor: pointer;
+  color: var(--black2);
+}
+
+.input-group.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.input-group.actions .button,
+.input-group.actions button {
+  width: 48%;
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--red);
+  border: 1px solid var(--red);
+  color: var(--white);
+  cursor: pointer;
+} 
+
+.input-group.actions button:hover{
+  width: 48%;
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--white);
+  border: 1px solid var(--black2);
+  color: var(--black1);
+  cursor: pointer;
+} 
+
+.input-group.actions .cancel {
+  background-color: var(--green); /* Cor de fundo */
+  color: var(--white); /* Cor do texto branca */
+  border: 1px solid var(--green); /* Borda */
+  text-align: center;
+  cursor: pointer;
+}
+
+.input-group.actions .cancel:hover {
+  background-color: var(--light-red); /* Cor de fundo vermelha mais clara ao passar o mouse */
+  border: 1px solid var(--black2); /* Borda vermelha mais clara ao passar o mouse */
+  color: black;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* ======================= Configuraçoes ================*/
+
+.configuration {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.configuration.active {
+  display: flex;
+}
+
+.data {
+  background: var(--gray);
+  padding: 3rem;
+  position: relative;
+  z-index: 1;
+  border-radius: 20px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+#form1 {
+  max-width: 100%;
+}
+
+#form1 h2 {
+  font-size: 20px;
+}
+
+.input-group1 {
+  margin-top: 20px;
+}
+
+.input-group1 label {
+  display: block;
+  font-size: 18px; /* Adjust label font size */
+}
+
+.input-group1 input {
+  width: 100%;
+  font-size: 15px; /* Adjust input font size */
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+  cursor: pointer;
+  color: var(--black2);
+}
+
+.input-group1.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.input-group1.actions .button,
+.input-group1.actions button {
+  width: 48%;
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--red);
+  border: 1px solid var(--red);
+  color: var(--white);
+  cursor: pointer;
+} 
+
+.input-group1.actions button:hover{
+  width: 48%;
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--white);
+  border: 1px solid var(--black2);
+  color: var(--black1);
+  cursor: pointer;
+} 
+
+.input-group1.actions .cancel {
+  background-color: var(--green); /* Cor de fundo */
+  color: var(--white); /* Cor do texto branca */
+  border: 1px solid var(--green); /* Borda */
+  text-align: center;
+  cursor: pointer;
+}
+
+.input-group1.actions .cancel:hover {
+  background-color: var(--light-red); /* Cor de fundo vermelha mais clara ao passar o mouse */
+  border: 1px solid var(--black2); /* Borda vermelha mais clara ao passar o mouse */
+  color: black;
+  text-align: center;
+  cursor: pointer;
+}
+#plano {
+  width: 100%;
+  font-size: 18px;
+  padding: 8px 44px 8px 10px; /* padding-top e bottom diminuídos */
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+  color: var(--black2);
+  background: #fff;
+  box-sizing: border-box;
+  height: 42px;
+  line-height: 1.3;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='22' width='22' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 22px 22px;
+  text-align: left;
+  vertical-align: middle; /* força alinhamento vertical */
+}
+
+/* Mantém o foco igual aos outros campos */
+#plano:focus {
+  border: 2px solid #000;
+  outline: none;
+}
+/* ======================= Toast =================== */
+
+#toast.show {
+  -webkit-animation: fadein 0.5s, expand 0.5s 0.5s,stay 3s 1s, shrink 0.5s 4s, fadeout 0.5s 4.5s;
+  animation: fadein 0.5s, expand 0.5s 0.5s,stay 3s 1s, shrink 0.5s 4s, fadeout 0.5s 4.5s;
+  visibility: visible;
+}
+
+#toast {
+  color: white;
+  background-color: red;
+  font-size: 12px;
+  text-align: center;
+  
+  height: 50px;
+
+  margin: auto;
+  position: fixed;
+  
+  left: 0;
+  right: 0;
+  
+  bottom: 30px;
+  
+  visibility: hidden;
+  z-index: 1000;
+  
+  border-radius: 0.25rem;
+  -webkit-border-radius: 0.25rem;
+  -moz-border-radius: 0.25rem;
+  -ms-border-radius: 0.25rem;
+  -o-border-radius: 0.25rem;
+  
+  white-space: nowrap;
+}
+
+
+
+#toast .img {
+  color: white;
+  background-color: var(--dark-red);
+
+width: 50px;
+height: 50px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  float: left;
+  box-sizing: border-box;
+}
+#toast .description {
+  color: white;
+
+  padding: 1rem 0 1rem 0;
+
+  overflow: hidden;
+white-space: nowrap;
+}
+
+
+/* ====================== Cards Laterais Painel ========================== */
+
+.card2Box {
+  display: flex; /* Use flexbox para alinhar os cards */
+  flex-direction: column; /* Alinha os cards em uma coluna */
+  align-items: flex-end; /* Alinha os cards à direita */  
+  margin-top: 20px;
+}
+
+/* Estilo para cada card */
+.card2 {
+  width: 96%;
+  height: 100px; /* Ajuste a altura conforme necessário */
+  margin-bottom: 70px; /* Espaço entre os cards */
+  background-color: #f0f0f0; /* Cor de fundo dos cards */
+  border-radius: 8px; /* Borda arredondada */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra do card */
+  margin-left: 10px;
+}
+
+.card2Box .card2 {
+  position: center;
+  background: var(--black1);
+  padding: 20px;
+  text-align: center;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center; /* Alinha os itens ao longo do eixo inline (horizontalmente, se a direção do fluxo for em linha) */
+  align-items: center; /* Alinha os itens ao longo do eixo do bloco (verticalmente, se a direção do fluxo for em linha) */
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Estilo para o cabeçalho */
+.card2Header {
+  width: 100%; /* Garante que o cabeçalho ocupa toda a largura */
+}
+
+.card2Box .card2 .card2Name {
+  color: var(--white);
+  font-size: 1rem;
+}
+
+.card2Box .card2 .icon2Bx {
+  font-size: 2.0rem;
+  color: var(--white);
+}
+
+.card2Box .card2:hover {
+  background: var(--green);
+}
+.card2Box .card2:hover .card2Name,
+.card2Box .card2:hover .icon2Bx {
+  color: var(--white);
+}
+/*Olho da senha*/
+#toggleSenha {
+  color: #888;
+  font-size: 1.2em;
+  transition: color 0.3s;
+}
+
+#toggleSenha:hover {
+  color: #000;
+}
+
+/* Contêiner para alinhar os gráficos lado a lado */
+.grafico-container {
+  display: flex; /* Alinha os gráficos lado a lado */
+  justify-content: space-between; /* Espaçamento uniforme entre os gráficos */
+  align-items: center; /* Centraliza os gráficos verticalmente */
+  gap: 20px; /* Espaçamento entre os gráficos */
+  margin-top: 20px; /* Margem superior */
+}
+
+
+/* Estilo individual para todos os gráficos */
+.grafico {
+  flex: 1; /* Faz com que os gráficos ocupem o mesmo espaço */
+  max-width: 48%; /* Limita a largura de cada gráfico */
+  background: var(--white); /* Fundo branco */
+  border-radius: 10px; /* Bordas arredondadas */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra para destaque */
+  padding: 20px; /* Espaçamento interno */
+  text-align: center; /* Centraliza o texto */
+  display: flex; /* Usa Flexbox para alinhar conteúdo interno */
+  flex-direction: column; /* Organiza conteúdo em coluna */
+  justify-content: center; /* Centraliza o conteúdo verticalmente */
+  height: 400px; /* Define altura uniforme para todos os gráficos */
+}
+
+/* Canvas ajustado para ocupar o espaço disponível */
+canvas {
+  display: block; /* Garante que o canvas ocupe o espaço do pai */
+  max-width: 100%; /* Canvas responsivo */
+  height: 100%; /* Ajusta a altura automaticamente */
+}
+/* Centraliza e alinha os textos da tabela */
+#usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#usuarios-table th, #usuarios-table td {
+  text-align: center; /* Centraliza o texto horizontalmente */
+  padding: 10px; /* Espaçamento interno */
+  font-size: 16px; /* Tamanho da fonte */
+  color: var(--black1); /* Cor do texto */
+}
+
+#usuarios-table th {
+  background-color: var(--gray); /* Cor de fundo do cabeçalho */
+  font-weight: bold; /* Deixa os títulos em negrito */
+}
+
+#usuarios-table tbody tr:hover {
+  background-color: var(--gray); /* Cor de fundo ao passar o mouse */
+}
+
+#usuarios-table td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Borda inferior */
+}
+
+/* Centraliza a imagem na coluna de imagem */
+#usuarios-table td:nth-child(1) img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+/* Destaque para a coluna de planos */
+#usuarios-table td:nth-child(6) {
+  font-weight: bold;
+  color: var(--green); /* Destaque para o plano */
+}
+
+/* Ajusta a largura e centraliza a coluna Data de Cadastro */
+#usuarios-table td:nth-child(5), #usuarios-table th:nth-child(5) {
+  text-align: center; /* Centraliza horizontalmente */
+  vertical-align: middle; /* Centraliza verticalmente */
+  white-space: nowrap; /* Impede quebra de linha */
+}
+
+.cardHeader h2 {
+  font-size: 24px; /* Ajuste do tamanho do título */
+  text-align: center; /* Centraliza o título */
+  color: var(--black1);
+}
+
+#filter-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+/* Centraliza todo o conteúdo das células */
+#usuarios-table td {
+  text-align: center; /* Alinha horizontalmente */
+  vertical-align: middle; /* Alinha verticalmente */
+  padding: 10px; /* Adiciona espaçamento interno */
+}
+
+/* Container flexível para os botões de ação */
+#usuarios-table td .action-buttons {
+  display: flex; /* Usa flexbox para alinhar os botões horizontalmente */
+  gap: 10px; /* Espaçamento uniforme entre os botões */
+  justify-content: center; /* Centraliza os botões horizontalmente */
+  align-items: center; /* Centraliza os botões verticalmente */
+}
+
+/* Botões de edição e exclusão */
+#usuarios-table td .btn-edit,
+#usuarios-table td .btn-delete {
+  cursor: pointer; /* Mostra o ponteiro ao passar o mouse */
+  font-size: 22px; /* Ajusta o tamanho dos ícones */
+  color: inherit; /* Herda a cor padrão */
+  display: flex; /* Garante que o botão seja flexível */
+  align-items: center; /* Centraliza o ícone dentro do botão */
+  justify-content: center; /* Centraliza o ícone dentro do botão */
+  width: 36px; /* Define largura consistente */
+  height: 36px; /* Define altura consistente */
+  border-radius: 50%; /* Torna os botões circulares */
+  border: 1px solid transparent; /* Sem borda visível (ajustável) */
+}
+
+/* Estilo de hover para os botões */
+#usuarios-table td .btn-edit:hover .action-buttons {
+  color: #689369; /* Azul ao passar o mouse */
+  background-color: rgba(0, 123, 255, 0.1); /* Fundo azul claro */
+}
+
+#usuarios-table td .btn-delete:hover .action-buttons {
+  color: #dc3545; /* Vermelho ao passar o mouse */
+  background-color: rgba(220, 53, 69, 0.1); /* Fundo vermelho claro */
+}
+
+/* Ícones dentro dos botões */
+#usuarios-table td .btn-edit ion-icon,
+#usuarios-table td .btn-delete ion-icon {
+  font-size: 20px; /* Ajusta o tamanho do ícone */
+  line-height: 1; /* Garante alinhamento vertical */
+}
+
+#usuarios-table td .btn-edit:hover {
+  color: #00ff1a; /* Azul ao passar o mouse */
+}
+
+#usuarios-table td .btn-delete:hover {
+  color: #dc3545; /* Vermelho ao passar o mouse */
+}
+
+/* Ajuste adicional para centralizar os botões */
+#usuarios-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+/* ===== NOVAS REGRAS PARA ALINHAR OS BOTÕES ====== */
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.action-buttons-group {
+  display: flex;
+  gap: 10px;
+}
+
+#searchChamados {
+  min-width: 250px;
+  margin-left: 10px;
+}
+
+/* Responsividade */
+@media (max-width: 1000px) {
+  .header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  #searchChamados {
+    margin-left: 0;
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* Opcional: Melhore o espaçamento dos botões em todas as telas */
+.btn1 {
+  margin: 0;
+}
+.recentOrders {
+  background: #fff; /* sempre branco */
+  border: 2.5px solid #8fe6b5; /* verde claro */
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.22), 0 2px 8px rgba(44, 62, 80, 0.11);
+  border-radius: 20px;
+  padding: 28px 24px 20px 24px;
+  margin-bottom: 40px;
+  transition: box-shadow 0.2s, border 0.2s, background 0.2s;
+}
+
+.recentOrders:hover {
+  background: #fff; /* mantem branco no hover */
+  box-shadow: 0 16px 48px rgba(44, 62, 80, 0.40), 0 6px 20px rgba(44, 62, 80, 0.28);
+  border-color: #62d995;
+}
+
+.recentOrders h2 {
+  font-size: 1.6rem;
+  color: #222;
+  margin-bottom: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Botões com verde claro */
+.btn1 {
+  background-color: #b6e2c7;  /* verde pastel claro */
+  color: #205d3b;
+  border: 2px solid #8fe6b5;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.16);
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
+  letter-spacing: 0.5px;
+}
+
+.btn1:hover {
+  background-color: #e0ffe7; /* verde ainda mais claro ao hover */
+  color: #205d3b;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(44, 62, 80, 0.21);
+}
+
+.btn1:active {
+  background-color: #8fe6b5; /* tom intermediário no clique */
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.23);
+}
+#searchChamados {
+  min-width: 260px;
+  max-width: 320px;
+  padding: 10px 16px;
+  border: 2px solid #8fe6b5;         /* mesma cor dos quadros */
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #f7fff9;               /* leve verde claro */
+  color: #222;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.06);
+  margin-left: 10px;
+}
+
+#searchChamados:focus {
+  border-color: #62d995;
+  background: #fff;
+  box-shadow: 0 0 0 3px #b6e2c7;
+}
+.cardHeader.relatorios-semanais {
+  margin-top: 60px; /* ajuste o valor conforme necessário para descer a seção */
+}
+/* Modal overlay e modal customizados */
+.modal-overlay {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0; left: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.modal-overlay.active { display: flex; }
+.confirm-modal {
+  background: #fff;
+  padding: 2.2rem 2.5rem;
+  border-radius: 16px;
+  max-width: 410px;
+  width: 94%;
+  box-shadow: 0 0 30px rgba(44, 62, 80, 0.18);
+  text-align: center;
+}
+.confirm-modal h3 {
+  color: #205d3b;
+  margin-bottom: 10px;
+  font-size: 1.35rem;
+}
+.confirm-modal p {
+  color: #222;
+  margin: 0 0 22px 0;
+  font-size: 1.05rem;
+}
+.confirm-modal .actions {
+  display: flex;
+  justify-content: space-around;
+  gap: 14px;
+}
+.confirm-modal .btn1 {
+  flex: 1 1 0;
+}
+.confirm-modal .btn-cancel {
+  background: #f7fff9;
+  color: #088c2b;
+  border: 2px solid #8fe6b5;
+}
+.confirm-modal .btn-cancel:hover {
+  background: #e0ffe7;
+  color: #205d3b;
+}
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+.filtros-chamados-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Estilo do filtro de texto (para referência) */
+#filtroSuportes {
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 1.07em;
+  color: #222;
+  background: #fff;
+  font-family: 'Segoe UI', 'Arial Rounded MT Bold', Arial, sans-serif;
+  outline: none;
+  box-shadow: 0 2px 10px #4caf5020;
+  transition: border 0.18s, box-shadow 0.18s;
+  min-width: 160px;
+  height: 44px;
+}
+
+/* Wrapper para alinhar seta customizada */
+.select-prioridade-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 165px;
+}
+
+/* Select alinhado e estilizado */
+#filtroPrioridade {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  background: #fff;
+  color: #222;
+  font-weight: 600;
+  font-size: 1.07em;
+  padding: 10px 38px 10px 16px;
+  width: 100%;
+  height: 44px;
+  box-shadow: 0 2px 10px #4caf5020;
+  outline: none;
+  font-family: 'Segoe UI', 'Arial Rounded MT Bold', Arial, sans-serif;
+  cursor: pointer;
+  transition: border 0.18s, box-shadow 0.18s, color 0.18s, background 0.18s, transform 0.18s;
+}
+
+#filtroPrioridade:focus {
+  border-color: #43A047;
+  background: #f7fff7;
+  color: #257b2b;
+  box-shadow: 0 4px 18px #4caf5035;
+  transform: scale(1.03);
+}
+
+/* Seta custom na direita */
+.select-prioridade-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 0.95em;
+  height: 0.60em;
+  pointer-events: none;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 7px solid #4CAF50;
+  transform: translateY(-50%);
+  z-index: 2;
+  transition: border-top-color 0.18s;
+}
+
+#filtroPrioridade:focus + .fake-arrow,
+.select-prioridade-wrapper:focus-within::after {
+  border-top-color: #388E3C;
+}
+
+/* Opções */
+#filtroPrioridade option {
+  color: #222;
+  background: #f4fff4;
+  font-weight: 500;
+  font-size: 1em;
+  border-radius: 4px;
+  transition: background 0.16s, color 0.16s;
+}
+/* Remove seta padrão no Edge/IE */
+#filtroPrioridade::-ms-expand {
+  display: none;
+}
+
+#filtroPrioridade option:hover, #filtroPrioridade option:checked {
+  background: #d4f8d4;
+  color: #388E3C;
+}
+/* ====================== Design Responsivo ========================== */
+@media (max-width: 768px) {
+  .grafico-container {
+    flex-direction: column; /* Empilha os gráficos verticalmente */
+    gap: 30px; /* Espaçamento maior entre os gráficos no modo empilhado */
+  }
+  .grafico {
+    max-width: 100%; /* Gráficos ocupam toda a largura */
+    height: 300px; /* Altura ajustada para telas menores */
+  }
+}
+
+@media (max-width: 991px) {
+  .navigation {
+    left: -300px;
+  }
+  .navigation.active {
+    width: 300px;
+    left: 0;
+  }
+  .main {
+    width: 100%;
+    left: 0;
+  }
+  .main.active {
+    left: 300px;
+  }
+  .cardBox {
+    grid-template-columns: repeat(2, 1fr); /* 2 por linha em tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .details {
+    grid-template-columns: 1fr;
+  }
+  .recentOrders {
+    overflow-x: auto;
+  }
+  .status.inProgress {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardBox {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .cardHeader h2 {
+    font-size: 20px;
+  }
+  .user {
+    min-width: 40px;
+  }
+  .navigation {
+    width: 100%;
+    left: -100%;
+    z-index: 1000;
+  }
+  .navigation.active {
+    width: 100%;
+    left: 0;
+  }
+  .toggle {
+    z-index: 10001;
+  }
+  .main.active .toggle {
+    color: #fff;
+    position: fixed;
+    right: 0;
+    left: initial;
+  }
+}
+
+
+
+@media (max-width: 600px) {
+  .modal {
+    width: 90%;
+    padding: 1.5rem;
+  }
+}
+
+/* Media query para telas menores */
+@media screen and (max-width: 600px) {
+  #data-table {
+    font-size: 3.5vw; /* Aumenta o tamanho da fonte para telas menores */
+  }
+}
+@media (max-width: 600px) {
+  .cardBox {
+    grid-template-columns: 1fr; /* 1 por linha em celular */
+  }
+}
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .grafico-container {
+    flex-direction: column; /* Empilha os gráficos verticalmente */
+    gap: 30px; /* Espaçamento maior entre os gráficos */
+  }
+  .grafico {
+    max-width: 100%; /* Gráficos ocupam toda a largura */
+  }
+}

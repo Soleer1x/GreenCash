@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>GreenCash - Todos os Recursos</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --main-green: #16d463;
+      --main-green-dark: #01ac45;
+      --main-bg: #1a3513;
+      --main-text: #222;
+      --shadow-dark: #16140b;
+      --shadow-green: #0c331c;
+      --gray: #7e7e7e;
+      --border-radius-lg: 24px;
+      --header-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    }
+
+    html, body {
+      background: linear-gradient(120deg, var(--main-green-dark) 0%, var(--shadow-green) 100%);
+      color: var(--main-text);
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background: #fff;
+      padding: 0.7rem 0;
+      box-shadow: var(--header-shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: box-shadow 0.2s, background 0.2s;
+      border-bottom: 3px solid var(--main-green);
+    }
+    .navbar.scrolled {
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      background: #fff;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: var(--main-green-dark) !important;
+      font-size: 2rem;
+      letter-spacing: -2px;
+    }
+    .nav-link {
+      color: var(--main-green-dark) !important;
+      margin-left: 2rem;
+      font-weight: 500;
+      font-size: 1.05rem;
+      transition: color .2s;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--main-green) !important;
+      text-decoration: underline;
+    }
+    .btn-main {
+      background: var(--main-green);
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.05rem;
+      border-radius: 20px;
+      padding: 8px 28px;
+      border: none;
+      transition: background .2s;
+      box-shadow: 0 1px 12px rgba(22,212,99,0.10);
+    }
+    .btn-main:hover, .btn-main:focus {
+      background: var(--main-green-dark);
+      color: #fff;
+    }
+    /* HERO Recursos */
+    .recursos-hero {
+      background: #fff;
+      padding: 68px 0 38px 0;
+      text-align: center;
+      box-shadow: 0 6px 32px 0 var(--shadow-dark);
+    }
+    .recursos-title {
+      font-size: 2.7rem;
+      font-weight: 700;
+      color: var(--main-green-dark);
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+      text-shadow: 0 2px 8px #b8f9cc33;
+    }
+    .recursos-lead {
+      color: var(--gray);
+      font-size: 1.18rem;
+      font-weight: 400;
+      margin-bottom: 35px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    /* Botão voltar */
+    .btn-outline-yellow {
+      background: transparent;
+      border: 2px solid var(--main-green-dark);
+      color: var(--main-green-dark);
+      border-radius: 999px;
+      padding: 5px 32px;
+      font-size: 1.02rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      box-shadow: none;
+      outline: none !important;
+      margin: 0 auto;
+      display: inline-block;
+    }
+    .btn-outline-yellow:hover, .btn-outline-yellow:focus {
+      background: var(--main-green-dark);
+      color: #fff;
+      box-shadow: 0 4px 18px 0 var(--main-green-dark);
+    }
+    /* NOVO GRID: "cards" em timeline alternada */
+    .all-recursos-section {
+      background: rgba(255,255,255,0.97);
+      padding: 56px 0 100px 0;
+      box-shadow: 0 0 32px 0 var(--shadow-green);
+      position:relative;
+    }
+    .all-section-title {
+      color: var(--main-green-dark);
+      font-weight: 700;
+      font-size: 2.1rem;
+      margin-bottom: 10px;
+      text-align: center;
+      text-shadow: 0 3px 10px #b8f9cc80;
+    }
+    .all-section-sub {
+      color: var(--gray);
+      font-size: 1.08rem;
+      margin-bottom: 54px;
+      text-align: center;
+    }
+    .timeline {
+      position: relative;
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 0 0 70px 0;
+    }
+    .timeline:before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg,#e5faec 0%, var(--main-green-dark) 100%);
+      z-index: 1;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 0 36px 40px 36px;
+      box-sizing: border-box;
+    }
+    .timeline-item.left {
+      left: 0;
+      text-align: right;
+    }
+    .timeline-item.right {
+      left: 50%;
+      text-align: left;
+    }
+    .timeline-content {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 32px rgba(22,212,99,0.09);
+      padding: 32px 22px 28px 22px;
+      position: relative;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      z-index: 2;
+      border: 1.5px solid #e9faef;
+      transition: box-shadow .22s, transform .22s;
+      opacity: 0;
+      transform: translateY(70px) scale(.97);
+    }
+    .timeline-item.visible .timeline-content {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      animation: fadeInUp .9s cubic-bezier(.4,0,.2,1);
+    }
+    .timeline-dot {
+      position: absolute;
+      top: 42px;
+      left: 100%;
+      transform: translateX(-50%);
+      width: 23px;
+      height: 23px;
+      border-radius: 50%;
+      background: #fff;
+      border: 5px solid var(--main-green-dark);
+      z-index: 10;
+      box-shadow: 0 2px 16px rgba(22,212,99,0.12);
+    }
+    .timeline-item.right .timeline-dot {
+      left: 0%;
+      transform: translateX(-50%);
+    }
+    .timeline-icon {
+      font-size: 2.2rem;
+      color: #fff;
+      background: linear-gradient(120deg,var(--main-green-dark) 60%,var(--main-green) 100%);
+      border-radius: 14px;
+      width: 56px; height: 56px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 13px;
+      box-shadow: 0 1px 9px #16d46333;
+    }
+    .timeline-title {
+      font-weight: 700;
+      color: var(--main-green-dark);
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+      margin-top: 0;
+    }
+    .timeline-desc {
+      color: var(--gray);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+    @media (max-width: 991px) {
+      .timeline {
+        max-width: 100%;
+      }
+      .timeline-item {
+        padding: 0 8px 40px 8px;
+      }
+    }
+    @media (max-width: 768px) {
+      .timeline:before {
+        left: 20px;
+      }
+      .timeline-item {
+        width: 100%;
+        left: 0 !important;
+        text-align: left !important;
+        padding: 0 0 46px 38px;
+      }
+      .timeline-dot {
+        left: 0;
+      }
+      .timeline-content {
+        margin-left: 36px;
+        min-width: 0;
+      }
+      .timeline-item.right .timeline-content {
+        margin-left: 36px;
+      }
+    }
+    @media (max-width: 600px) {
+      .timeline-content { padding: 14px 7px 11px 10px; }
+      .timeline { padding-bottom: 40px;}
+    }
+    /* Footer */
+    footer {
+      background: #fff;
+      color: var(--main-green-dark);
+      font-size: 1rem;
+      padding: 42px 0 18px 0;
+      text-align: center;
+      border-top: 1.5px solid #f0f0f0;
+      margin-top: 30px;
+    }
+    .footer-social a {
+      color: var(--main-green-dark);
+      margin: 0 12px;
+      font-size: 1.3rem;
+      transition: color 0.2s;
+    }
+    .footer-social a:hover { color: #222; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(70px) scale(.97);}
+      to { opacity: 1; transform: translateY(0) scale(1);}
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">greencash</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html#recursos">Recursos</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#planos">Planos</a></li>
+          <li class="nav-item ml-2">
+            <a href="login.php" class="btn btn-main">Acessar</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO Recursos -->
+  <section class="recursos-hero">
+    <div class="container">
+      <h1 class="recursos-title animate__animated animate__fadeInUp">Todos os recursos do GreenCash</h1>
+      <div class="recursos-lead animate__animated animate__fadeInUp animate__delay-1s">
+        Descubra o poder de uma plataforma completa: controle, antecipe, audite e automatize suas finanças com tecnologia de ponta e máxima segurança.<br>
+        Veja abaixo todos os recursos disponíveis para você e sua empresa!
+      </div>
+      <a href="index.html#recursos" class="btn-outline-yellow animate__animated animate__fadeInUp animate__delay-2s" style="margin-top: 16px;">
+        <i class="fas fa-arrow-left mr-1"></i> Voltar ao início
+      </a>
+    </div>
+  </section>
+
+  <!-- TODOS OS RECURSOS (timeline alternada) -->
+  <section class="all-recursos-section">
+    <div class="container">
+      <h2 class="all-section-title">Lista completa de recursos</h2>
+      <div class="all-section-sub">Tudo que você precisa para uma gestão financeira moderna e eficiente.</div>
+      <div class="timeline" id="timelineRecursos">
+        <!-- Para cada item alterna .left e .right -->
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-chart-bar"></i></div>
+            <div class="timeline-title">Simulação de antecipações</div>
+            <div class="timeline-desc">Simule antecipações de recebíveis diretamente na plataforma e visualize o impacto financeiro antes de efetivar a operação.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-university"></i></div>
+            <div class="timeline-title">Automação e inteligência de dados</div>
+            <div class="timeline-desc">Baixa automática de recebíveis integrada aos principais ERPs, descubra taxas cobradas e emita relatórios personalizados facilmente.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-credit-card"></i></div>
+            <div class="timeline-title">Gestão de cancelamentos e chargebacks</div>
+            <div class="timeline-desc">Controle completo para cancelamentos e chargebacks, facilitando a auditoria e a gestão de risco do seu negócio.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-plug"></i></div>
+            <div class="timeline-title">Integração com sistemas de gestão</div>
+            <div class="timeline-desc">Conexão direta com ERPs e sistemas do mercado para automação de dados, conciliações e emissão de relatórios.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-file-contract"></i></div>
+            <div class="timeline-title">Auditoria de contratos</div>
+            <div class="timeline-desc">Auditoria detalhada de contratos de taxas praticadas com adquirentes, garantindo transparência e economia para sua empresa.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-eye"></i></div>
+            <div class="timeline-title">Visão detalhada das movimentações</div>
+            <div class="timeline-desc">Visualize informações amplas e específicas de toda movimentação financeira em tempo real, com filtros avançados.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-bolt"></i></div>
+            <div class="timeline-title">Conciliação automática</div>
+            <div class="timeline-desc">Conciliação automática de vendas, recebíveis e extratos bancários de forma rápida, reduzindo erros manuais e retrabalho.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+            <div class="timeline-title">Relatórios inteligentes</div>
+            <div class="timeline-desc">Gere relatórios financeiros customizados com poucos cliques, visualizando dados por período, adquirente, operadora e muito mais.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-lock"></i></div>
+            <div class="timeline-title">Segurança de dados bancários</div>
+            <div class="timeline-desc">Camadas avançadas de criptografia e autenticação em dois fatores para máxima proteção das informações sensíveis.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-users"></i></div>
+            <div class="timeline-title">Gestão multiusuário</div>
+            <div class="timeline-desc">Permissões avançadas para equipes financeiras, controlando acessos por usuário, setor ou filial.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-desktop"></i></div>
+            <div class="timeline-title">Interface moderna e responsiva</div>
+            <div class="timeline-desc">Acesse de qualquer dispositivo, com interface intuitiva e responsiva, proporcionando experiência fluida e agradável.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-database"></i></div>
+            <div class="timeline-title">Backup automático</div>
+            <div class="timeline-desc">Backups automáticos e versionados dos dados financeiros para total tranquilidade e recuperação rápida.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-bell"></i></div>
+            <div class="timeline-title">Alertas e notificações inteligentes</div>
+            <div class="timeline-desc">Receba alertas personalizados sobre movimentações, prazos, inconsistências e oportunidades de economia.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-coins"></i></div>
+            <div class="timeline-title">Controle de taxas e tarifas</div>
+            <div class="timeline-desc">Gerencie e audite taxas cobradas por bancos e adquirentes, identificando cobranças indevidas.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-chart-pie"></i></div>
+            <div class="timeline-title">Dashboards personalizáveis</div>
+            <div class="timeline-desc">Monte painéis de acordo com o seu perfil, acompanhando indicadores essenciais para sua gestão.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-sync-alt"></i></div>
+            <div class="timeline-title">Atualizações contínuas</div>
+            <div class="timeline-desc">Plataforma em constante evolução, com melhorias frequentes baseadas no feedback dos usuários.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-question-circle"></i></div>
+            <div class="timeline-title">Suporte especializado</div>
+            <div class="timeline-desc">Equipe pronta para ajudar via chat, e-mail e telefone, garantindo atendimento ágil e resolutivo.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-search-dollar"></i></div>
+            <div class="timeline-title">Busca avançada de transações</div>
+            <div class="timeline-desc">Encontre rapidamente qualquer movimentação financeira, usando filtros inteligentes e exportação para Excel.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-mobile-alt"></i></div>
+            <div class="timeline-title">Acesso mobile completo</div>
+            <div class="timeline-desc">Tenha controle total das finanças pelo smartphone, em qualquer lugar, com o mesmo nível de funcionalidades.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-icon"><i class="fas fa-cogs"></i></div>
+            <div class="timeline-title">APIs e integrações customizadas</div>
+            <div class="timeline-desc">Integre com sistemas internos, plataformas de e-commerce e automações via API de forma simples e segura.</div>
+          </div>
+          <span class="timeline-dot"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 GreenCash. Todos os direitos reservados.</p>
+    <div class="footer-social">
+      <a href="#" class="mx-2"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="mx-2"><i class="fab fa-whatsapp"></i></a>
+      <a href="#" class="mx-2"><i class="fab fa-linkedin"></i></a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Navbar scroll styling
+    window.addEventListener('scroll', function() {
+      const nav = document.querySelector('.navbar');
+      if(window.scrollY > 30){
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Fade in on scroll para timeline
+    function revealTimelineOnScroll() {
+      var items = document.querySelectorAll('.timeline-item');
+      for (var i = 0; i < items.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = items[i].getBoundingClientRect().top;
+        var elementVisible = 90;
+        if (elementTop < windowHeight - elementVisible) {
+          items[i].classList.add('visible');
+        }
+      }
+    }
+    window.addEventListener('scroll', revealTimelineOnScroll);
+    window.addEventListener('DOMContentLoaded', revealTimelineOnScroll);
+  </script>
+</body>
+</html>

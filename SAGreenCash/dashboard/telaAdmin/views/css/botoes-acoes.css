@@ -1,0 +1,239 @@
+.btn-edit,
+.btn-edit *,
+.btn-edit :after,
+.btn-edit :before,
+.btn-edit:after,
+.btn-edit:before {
+  border: 0 solid;
+  box-sizing: border-box;
+}
+
+.btn-edit {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: button;
+  background-color: #4CAF50;
+  background-image: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Segoe UI', 'Arial Rounded MT Bold', Arial, sans-serif;
+  font-size: 10px;                /* Ainda menor */
+  font-weight: 700;
+  border-radius: 99rem;
+  border-width: 2px;
+  padding: 0.18rem 0.7rem;         /* Menor mas ainda confortável */
+  margin-right: 3px;
+  margin-bottom: 0;
+  outline: none;
+  min-width: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 1px 6px rgba(76,175,80,0.09);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.16s, color 0.16s, box-shadow 0.19s;
+  z-index: 0;
+  line-height: 1.2;
+  height: 28px;                   /* Proporcional e fixo */
+  vertical-align: middle;
+}
+
+.btn-edit:last-child {
+  margin-right: 0;
+}
+
+.btn-edit .text-container {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  mix-blend-mode: difference;
+}
+
+.btn-edit .text {
+  display: block;
+  position: relative;
+  transition: color 0.19s;
+}
+
+.btn-edit:hover .text {
+  animation: move-up-alternate 0.33s forwards;
+}
+
+@keyframes move-up-alternate {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(85%);
+  }
+  51% {
+    transform: translateY(-85%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.btn-edit:before,
+.btn-edit:after {
+  --skew: 0.22;
+  background: #27e6e6;  /* Efeito destacado */
+  content: "";
+  display: block;
+  height: 102%;
+  left: calc(-50% - 50% * var(--skew));
+  pointer-events: none;
+  position: absolute;
+  top: -104%;
+  transform: skew(calc(150deg * var(--skew))) translateY(var(--progress, 0));
+  transition: transform 0.24s cubic-bezier(.29,.64,.48,1.31);
+  width: 100%;
+  opacity: 0.45;
+  z-index: -1;
+}
+
+.btn-edit:after {
+  --progress: 0%;
+  left: calc(50% + 50% * var(--skew));
+  top: 102%;
+  z-index: -2;
+}
+
+.btn-edit:hover:before {
+  --progress: 100%;
+}
+
+.btn-edit:hover:after {
+  --progress: -102%;
+}
+
+.btn-edit:active {
+  background: #388E3C;
+  color: #fff;
+  transform: scale(0.97);
+  box-shadow: 0 1px 6px rgba(56,142,60,0.17);
+}
+
+.btn-edit:focus {
+  outline: 2px solid #43A047;
+  outline-offset: 2px;
+}
+
+/* Para uso do botão:
+<button class="btn-edit"><span class="text-container"><span class="text">Concluir</span></span></button>
+*/
+
+.acoes-botoes {
+  white-space: nowrap;
+  text-align: left;
+  display: table-cell !important;
+  vertical-align: middle;
+  padding: 0 !important;
+}
+.modal-concluir {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.22);
+  align-items: center;
+  justify-content: center;
+}
+.modal-concluir.active {
+  display: flex;
+}
+.modal-concluir-box {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.18);
+  padding: 26px 24px 18px 24px;
+  min-width: 240px;
+  max-width: 96vw;
+  width: 340px;
+  text-align: center;
+  animation: modalShow .18s cubic-bezier(.29,.64,.48,1.31);
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  position: relative;
+}
+@keyframes modalShow {
+  from { opacity: 0; transform: scale(.96) translateY(18px);}
+  to   { opacity: 1; transform: none;}
+}
+.modal-concluir-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+.btn1 {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background .18s, transform .14s;
+  text-align: center;
+  letter-spacing: 0.5px;
+  margin-top: 0;
+}
+.btn1:hover {
+  background-color: #388e3c;
+  color: #fff;
+  transform: scale(1.06);
+}
+.modal-overlay { display: none; }
+.modal-overlay.active { display: flex !important; }
+.modal-concluir {
+  display: none;
+}
+.modal-concluir.active {
+  display: flex;
+}
+
+/* Textarea animada para Observação */
+.observacao-textarea {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  min-height: 54px;
+  max-height: 190px;
+  padding: 10px 16px;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  background: #fff;
+  color: #222;
+  font-weight: 600;
+  font-size: 1.07em;
+  font-family: 'Segoe UI', 'Arial Rounded MT Bold', Arial, sans-serif;
+  box-shadow: 0 2px 10px #4caf5020;
+  outline: none;
+  resize: vertical;
+  transition: border 0.18s, box-shadow 0.18s, color 0.18s, background 0.18s, transform 0.18s;
+}
+
+.observacao-textarea:focus {
+  border-color: #43A047;
+  background: #f7fff7;
+  color: #257b2b;
+  box-shadow: 0 4px 18px #4caf5035;
+  transform: scale(1.03);
+}
+
+/* Placeholder styling */
+.observacao-textarea::placeholder {
+  color: #8fc49a;
+  opacity: 1;
+  font-weight: 500;
+  font-size: 1em;
+}
+
+/* Remove default focus highlight for Edge/IE */
+.observacao-textarea::-ms-expand {
+  display: none;
+}

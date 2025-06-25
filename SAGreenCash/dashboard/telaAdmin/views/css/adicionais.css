@@ -1,0 +1,50 @@
+.priority-select {
+  border-radius: 6px;
+  border: 1px solid #4CAF50;
+  padding: 2px 8px;
+  font-size: 1em;
+  margin-left: 5px;
+}
+.btn-view-nota {
+  background: none;
+  border: none;
+  color: #2196F3;
+  cursor: pointer;
+  font-size: 1.3em;
+  margin: 0 2px;
+  vertical-align: middle;
+  transition: color 0.15s;
+}
+.btn-view-nota:hover { color: #1976D2; }
+.caixa_texto {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  min-height: 54px;
+  max-height: 190px;
+  padding: 10px 16px;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  background: #fff;
+  color: #222;
+  font-weight: 600;
+  font-size: 1.07em;
+  font-family: 'Segoe UI', 'Arial Rounded MT Bold', Arial, sans-serif;
+  box-shadow: 0 2px 10px #4caf5020;
+  outline: none;
+  resize: vertical;
+  transition: border 0.18s, box-shadow 0.18s, color 0.18s, background 0.18s, transform 0.18s;
+}
+
+.caixa_texto:focus {
+  border-color: #43A047;
+  background: #f7fff7;
+  color: #257b2b;
+  box-shadow: 0 4px 18px #4caf5035;
+  transform: scale(1.03);
+}
+/* Remove default focus highlight for Edge/IE */
+.caixa_texto::-ms-expand {
+  display: none;
+}
