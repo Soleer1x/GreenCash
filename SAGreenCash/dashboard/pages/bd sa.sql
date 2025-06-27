@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
   bio VARCHAR(255) DEFAULT NULL,
   foto VARCHAR(255) DEFAULT NULL,
   plano VARCHAR(30) DEFAULT NULL,
-  ativo TINYINT(1) NOT NULL DEFAULT 1,            -- 1=ativo, 0=inativo
+  ativo TINYINT(1) NOT NULL DEFAULT 1,
+  historico_financeiro_excluido TINYINT(1) DEFAULT 0,            -- 1=ativo, 0=inativo
   dataCadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

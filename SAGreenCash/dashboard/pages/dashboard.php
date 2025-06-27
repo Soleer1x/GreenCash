@@ -134,14 +134,47 @@ function navActive($file) {
               </a>
             </li>
             <li class="nav-item d-flex align-items-center">
-              <a href="../pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
-                <i class="material-symbols-rounded">account_circle</i>
-              </a>
-            </li>
+            <a href="profile.php" style="display:inline-block;">
+              <img id="navbar-profile-img" src="../assets/img/usuario.png" alt="Perfil" style="width:36px;height:36px;object-fit:cover;border-radius:50%;border:2px solid #43a047;cursor:pointer;">
+            </a>
+          </li>
           </ul>
         </div>
       </div>
     </nav>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+  function atualizaNavbarFoto(foto) {
+    const navbarImg = document.getElementById('navbar-profile-img');
+    if (navbarImg) {
+      navbarImg.src = foto && foto !== "" ? foto : '../assets/img/usuario.png';
+    }
+  }
+  function carregaPerfilAtualizaNavbar() {
+    fetch('carregar_perfil.php')
+      .then(res => res.json())
+      .then(data => {
+        const fotoPerfil = data.foto && data.foto !== "" ? data.foto : '../assets/img/usuario.png';
+        atualizaNavbarFoto(fotoPerfil);
+      });
+  }
+  document.querySelectorAll('.nav-link').forEach(function(link) {
+    if (link.textContent.includes('Configuração')) {
+      link.addEventListener('click', carregaPerfilAtualizaNavbar);
+    }
+  });
+  if (document.getElementById('settings-form')) {
+    document.getElementById('settings-form').addEventListener('submit', function(e) {
+      setTimeout(carregaPerfilAtualizaNavbar, 900);
+    });
+  }
+  carregaPerfilAtualizaNavbar();
+});
+  </script>
+
+  
     <!-- End Navbar -->
     <div class="container-fluid py-2">
       <div class="row">
