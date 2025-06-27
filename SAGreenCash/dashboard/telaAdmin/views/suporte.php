@@ -1,52 +1,71 @@
 <?php
+// Inicia a sessão para controlar autenticação do usuário
 session_start();
+
+// Verifica se o usuário está logado. Se não estiver, redireciona para o login.
 if (!isset($_SESSION["usuario"])) {
   header("Location: ../login.php");
   exit;
 }
+
+// Inclui o arquivo de conexão com o banco de dados MySQLi
 require "db.php";
 
+// Variáveis que armazenam mensagens de feedback para o usuário (sucesso ou erro)
 $msgOk = $msgErro = "";
 
-// Defina a variável pesquisa SEMPRE antes de usar!
+// Captura o termo de pesquisa do GET (usado para filtrar chamados)
 $pesquisa = $_GET['pesquisa'] ?? '';
 
-// Limpar histórico (marca como limpado, não apaga)
+// ====== BLOCO DE AÇÕES ADMINISTRATIVAS ======
+
+// Se o admin solicitou limpar o histórico de chamados concluídos (via POST):
+// Atualiza o status desses chamados para "limpo" (não apaga do banco, apenas marca).
 if (isset($_POST['limpar_historico'])) {
     $conn->query("UPDATE suporte SET status='limpo' WHERE id IN (SELECT suporte_id FROM suporte_resposta)");
     registrar_log($conn, $_SESSION['usuario']['id'], "Limpou histórico de chamados concluídos");
 }
 
-// Limpar log de atividades (deleta tudo)
+// Se o admin solicitou limpar o log de atividades (via GET):
+// Apaga todos os registros da tabela log_atividades.
 if (isset($_GET['limpar_log'])) {
     $conn->query("DELETE FROM log_atividades");
     $msgOk = "Log de atividades limpo!";
 }
 
+// ====== ALTERAÇÃO DE PRIORIDADE DO CHAMADO ======
 
-// Atualiza prioridade de chamado aberto
+// Se o admin enviou o formulário para mudar a prioridade de um chamado aberto:
 if (isset($_POST['mudar_prioridade']) && isset($_POST['prioridade_edit'], $_POST['chamado_id'])) {
-    $prioridade = $_POST['prioridade_edit'];
-    $chamado_id = (int)$_POST['chamado_id'];
+    $prioridade = $_POST['prioridade_edit']; // Nova prioridade selecionada
+    $chamado_id = (int)$_POST['chamado_id']; // ID do chamado sendo alterado
+    // Só permite prioridades válidas
     if (in_array($prioridade, ["Alta","Média","Baixa"])) {
         $conn->query("UPDATE suporte SET prioridade='$prioridade' WHERE id=$chamado_id");
         registrar_log($conn, $_SESSION['usuario']['id'], "Alterou prioridade do chamado $chamado_id para $prioridade");
     }
 }
 
-// Responder chamado
+// ====== RESPOSTA AO CHAMADO DE SUPORTE ======
+
+// Se o formulário de resposta ao chamado foi enviado (POST):
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['responder_id'], $_POST['mensagem'])) {
-    $suporte_id = intval($_POST['responder_id']);
-    $admin_id = $_SESSION['usuario']['id'];
-    $mensagem = trim($_POST['mensagem']);
-    $observacao = trim($_POST['observacao'] ?? '');
-    $prioridade = $_POST['prioridade'] ?? '';
+    $suporte_id = intval($_POST['responder_id']); // ID do chamado a ser respondido
+    $admin_id = $_SESSION['usuario']['id']; // ID do admin que respondeu
+    $mensagem = trim($_POST['mensagem']); // Mensagem de resposta
+    $observacao = trim($_POST['observacao'] ?? ''); // Observação opcional
+    $prioridade = $_POST['prioridade'] ?? ''; // Prioridade selecionada
+
+    // Só processa se todos os campos obrigatórios estiverem preenchidos e prioridade for válida
     if ($mensagem && in_array($prioridade, ["Alta","Média","Baixa"])) {
+        // Insere a resposta na tabela suporte_resposta
         $stmt = $conn->prepare("INSERT INTO suporte_resposta (suporte_id, admin_id, mensagem, observacao, prioridade) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("iisss", $suporte_id, $admin_id, $mensagem, $observacao, $prioridade);
         $stmt->execute();
         $stmt->close();
+        // Atualiza a prioridade do chamado no banco
         $conn->query("UPDATE suporte SET prioridade='$prioridade' WHERE id=$suporte_id");
+        // Registra essa ação no log de atividades
         registrar_log($conn, $admin_id, "Respondeu ao chamado $suporte_id (prioridade $prioridade)");
         $msgOk = "Resposta enviada!";
     } else {
@@ -58,21 +77,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['responder_id'], $_POS
 // FILTRO DE PESQUISA NA QUERY SQL
 // ===============================
 
-// Chamados abertos
+// MONTA A CONSULTA PARA CHAMADOS ABERTOS (ainda não respondidos)
+// JOIN com tabela usuarios para trazer nome e email do usuário
+// Se tiver pesquisa, filtra por título, descrição, nome ou email.
 $sqlAbertos = "SELECT s.*, u.nome as nome_usuario, u.email as email_usuario
         FROM suporte s
         JOIN usuarios u ON s.usuario_id = u.id
         WHERE NOT EXISTS (SELECT 1 FROM suporte_resposta sr WHERE sr.suporte_id = s.id)
           AND (s.status IS NULL OR s.status != 'limpo')";
 if (!empty($pesquisa)) {
-    $pesq = $conn->real_escape_string($pesquisa);
+    $pesq = $conn->real_escape_string($pesquisa); // Protege contra SQL injection
     $sqlAbertos .= " AND (s.titulo LIKE '%$pesq%' OR s.descricao LIKE '%$pesq%' OR u.nome LIKE '%$pesq%' OR u.email LIKE '%$pesq%')";
 }
 $sqlAbertos .= " ORDER BY FIELD(s.prioridade, 'Alta', 'Média', 'Baixa'), s.data_hora DESC";
+// Executa a consulta e coloca todos os resultados em um array associativo
 $resAbertos = $conn->query($sqlAbertos);
 $chamadosAbertos = $resAbertos->fetch_all(MYSQLI_ASSOC);
 
-// Chamados concluídos
+// MONTA A CONSULTA PARA CHAMADOS CONCLUÍDOS (já respondidos)
 $sqlConcluidos = "SELECT s.*, u.nome as nome_usuario, u.email as email_usuario
         FROM suporte s
         JOIN usuarios u ON s.usuario_id = u.id
@@ -86,11 +108,13 @@ $sqlConcluidos .= " ORDER BY s.data_hora DESC";
 $resConcluidos = $conn->query($sqlConcluidos);
 $chamadosConcluidos = $resConcluidos->fetch_all(MYSQLI_ASSOC);
 
+// Função auxiliar para buscar a última resposta (e admin que respondeu) de um chamado específico
 function buscarResposta($conn, $suporte_id) {
     $r = $conn->query("SELECT sr.*, a.nome as admin_nome FROM suporte_resposta sr LEFT JOIN adm a ON sr.admin_id = a.id WHERE suporte_id = $suporte_id ORDER BY sr.data DESC LIMIT 1");
     return $r->fetch_assoc();
 }
 
+// Função auxiliar para registrar ações no log de atividades dos admins
 function registrar_log($conn, $admin_id, $acao) {
     $stmt = $conn->prepare("INSERT INTO log_atividades (admin_id, acao) VALUES (?, ?)");
     $stmt->bind_param("is", $admin_id, $acao);
@@ -98,17 +122,19 @@ function registrar_log($conn, $admin_id, $acao) {
     $stmt->close();
 }
 
+// Busca o log de atividades mais recentes dos admins
 $logs = $conn->query("SELECT l.*, a.nome as admin_nome FROM log_atividades l LEFT JOIN adm a ON l.admin_id = a.id ORDER BY l.data_hora DESC")->fetch_all(MYSQLI_ASSOC);
 
-$kpiAbertos = count($chamadosAbertos);
-$kpiConcluidos = count($chamadosConcluidos);
-$kpiHoje = $conn->query("SELECT COUNT(*) FROM suporte WHERE DATE(data_hora) = CURDATE()")->fetch_row()[0];
+// KPIs para exibir no topo do painel de chamados
+$kpiAbertos = count($chamadosAbertos); // Quantos chamados abertos no momento
+$kpiConcluidos = count($chamadosConcluidos); // Quantos chamados concluídos
+$kpiHoje = $conn->query("SELECT COUNT(*) FROM suporte WHERE DATE(data_hora) = CURDATE()")->fetch_row()[0]; // Quantos chamados abertos hoje
 $kpiAlta = $conn->query("
     SELECT COUNT(*) FROM suporte 
     WHERE (prioridade='Alta')
       AND NOT EXISTS (SELECT 1 FROM suporte_resposta sr WHERE sr.suporte_id = suporte.id)
       AND (status IS NULL OR status != 'limpo')
-")->fetch_row()[0];
+")->fetch_row()[0]; // Quantos chamados abertos com prioridade alta
 
 ?>
 <!DOCTYPE html>

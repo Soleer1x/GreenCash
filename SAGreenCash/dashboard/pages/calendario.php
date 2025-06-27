@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 if (!isset($_SESSION["usuario"])) {
@@ -26,34 +27,23 @@ if (isset($_SESSION["usuario"]["tipo"]) && $_SESSION["usuario"]["tipo"] == 1) {
   <!-- Nucleo Icons -->
   <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
   <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- FullCalendar CSS -->
+  <!-- FullCalendar CSS Modern Theme -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
   <!-- Material Dashboard CSS -->
   <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    .main-content {
-      flex: 1 0 auto;
-    }
+    /* CALENDÁRIO MODERNO */
     #main-calendar {
       background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-      padding: 24px;
+      border-radius: 18px;
+      box-shadow: 0 8px 40px 0 rgba(67,160,71,0.12);
+      padding: 32px 24px;
       max-width: 1200px;
       min-height: 700px;
       width: 100%;
       margin-left: 32px;
       margin-right: auto;
+      margin-top: 24px;
     }
     @media (max-width: 991px) {
       #main-calendar {
@@ -62,19 +52,111 @@ if (isset($_SESSION["usuario"]["tipo"]) && $_SESSION["usuario"]["tipo"] == 1) {
         margin-left: 0;
       }
     }
-    .fc-toolbar-title {
-      font-size: 2rem !important;
-      font-weight: 700;
-      color: #388e3c;
-    }
-    .fc-button-primary {
-      background: #43A047;
-      border: none;
+    .fc {
+      background: transparent;
+      border-radius: 18px;
+      font-family: inherit;
       box-shadow: none;
     }
-    .fc-button-primary:hover,
-    .fc-button-primary:focus {
-      background: #388e3c;
+    .fc-toolbar.fc-header-toolbar {
+      border-radius: 18px 18px 0 0;
+      padding-bottom: 14px;
+      background: none;
+    }
+    .fc-toolbar-title {
+      color: #43a047;
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 16px #43a04713;
+      text-align: center;
+      width: 100%;
+    }
+    .fc-button, .fc-button-primary {
+      background: #fff;
+      border: none;
+      color: #43a047;
+      font-weight: 700;
+      border-radius: 10px;
+      box-shadow: 0 1px 6px #43a04716;
+      transition: background .16s, color .16s;
+      margin-right: 6px;
+      outline: none !important;
+    }
+    .fc-button:focus {
+      background: #e8f5e9;
+      color: #388e3c;
+      box-shadow: 0 0 0 2px #43a04733;
+    }
+    .fc-button-primary:not(:disabled):hover,
+    .fc-button:not(:disabled):hover {
+      background: #43a047 !important;
+      color: #fff !important;
+    }
+    .fc-daygrid-day-number {
+      font-weight: 700;
+      color: #43a047;
+      padding-right: 6px;
+      padding-top: 3px;
+      font-size: 1.07em;
+      z-index: 2;
+      position: relative;
+    }
+    .fc-daygrid-day.fc-day-today {
+      background: #e7f7ea !important;
+      border-radius: 13px;
+      box-shadow: 0 2px 10px #43a0472b;
+    }
+    .fc-scrollgrid, .fc-scrollgrid-sync-table {
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .fc-col-header-cell-cushion, .fc-daygrid-day-number {
+      border-radius: 6px;
+    }
+    .fc-daygrid-day-events {
+      margin-top: 6px;
+    }
+    /* Botão Atualizações */
+    .btn-atualizacoes-fc {
+      display: block;
+      margin: 0 auto;
+      font-size: 1em;
+      font-weight: 700;
+      background: linear-gradient(90deg, #43a047 60%, #34d399 100%);
+      color: #fff;
+      border: none;
+      padding: 7px 20px;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 12px #43a04733, 0 1px 10px #1976d21a;
+      transition: background .18s, transform .18s, box-shadow .15s;
+      position: relative;
+      animation: btn-pulse 1.3s cubic-bezier(.5,0,.2,1) infinite alternate;
+      outline: none;
+      letter-spacing: 0.1px;
+      overflow: hidden;
+    }
+    @keyframes btn-pulse {
+      0% { box-shadow: 0 2px 12px #43a04733, 0 1px 10px #1976d21a; transform: scale(1);}
+      100% { box-shadow: 0 4px 24px #43a04755, 0 1px 18px #1976d244; transform: scale(1.08);}
+    }
+    .btn-atualizacoes-fc:hover, .btn-atualizacoes-fc:focus {
+      background: linear-gradient(90deg, #34d399 0%, #43a047 100%);
+      color: #fff;
+      transform: scale(1.09);
+      box-shadow: 0 4px 24px #43a04733, 0 1px 10px #1976d233;
+      animation: none;
+      outline: none !important;
+    }
+    .btn-atualizacoes-fc::-moz-focus-inner {
+      border: 0;
+    }
+    .btn-atualizacoes-fc .material-symbols-rounded {
+      font-size: 1.25em;
+      vertical-align: bottom;
+      margin-right: 4px;
     }
   </style>
 </head>
@@ -169,45 +251,14 @@ function navActive($file) {
               </a>
             </li>
             <li class="nav-item d-flex align-items-center">
-            <a href="profile.php" style="display:inline-block;">
-              <img id="navbar-profile-img" src="../assets/img/usuario.png" alt="Perfil" style="width:36px;height:36px;object-fit:cover;border-radius:50%;border:2px solid #43a047;cursor:pointer;">
-            </a>
-          </li>
+              <a href="../pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
+                <i class="material-symbols-rounded">account_circle</i>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-  function atualizaNavbarFoto(foto) {
-    const navbarImg = document.getElementById('navbar-profile-img');
-    if (navbarImg) {
-      navbarImg.src = foto && foto !== "" ? foto : '../assets/img/usuario.png';
-    }
-  }
-  function carregaPerfilAtualizaNavbar() {
-    fetch('carregar_perfil.php')
-      .then(res => res.json())
-      .then(data => {
-        const fotoPerfil = data.foto && data.foto !== "" ? data.foto : '../assets/img/usuario.png';
-        atualizaNavbarFoto(fotoPerfil);
-      });
-  }
-  document.querySelectorAll('.nav-link').forEach(function(link) {
-    if (link.textContent.includes('Configuração')) {
-      link.addEventListener('click', carregaPerfilAtualizaNavbar);
-    }
-  });
-  if (document.getElementById('settings-form')) {
-    document.getElementById('settings-form').addEventListener('submit', function(e) {
-      setTimeout(carregaPerfilAtualizaNavbar, 900);
-    });
-  }
-  carregaPerfilAtualizaNavbar();
-});
-  </script>
-  
     <!-- End Navbar -->
 
     <div class="container-fluid py-4">
@@ -231,6 +282,24 @@ function navActive($file) {
       </div>
     </footer>
   </main>
+
+  <!-- Modal de Atualizações -->
+  <div class="modal fade" id="modalAtualizacoes" tabindex="-1" aria-labelledby="modalAtualizacoesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header border-bottom-0" style="background:#fff;border-radius:16px 16px 0 0;">
+          <h5 class="modal-title" id="modalAtualizacoesLabel">
+            <span class="material-symbols-rounded" style="color:#43a047;font-size:1.4em;vertical-align:middle;">event_available</span>
+            Atualizações do Dia
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body" id="atualizacoesConteudo">
+          <!-- Conteúdo via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Ajustes de Interface -->
   <div class="fixed-plugin">
@@ -331,10 +400,75 @@ function navActive($file) {
         height: 'auto',
         selectable: true,
         editable: false,
-        events: [], // Para popular do backend, se desejar
+        events: fetchEventosCalendario,
+        eventContent: renderizarBotaoAtualizacoes
       });
       calendar.render();
     });
+
+    // Busca eventos do backend (AJAX)
+    function fetchEventosCalendario(info, successCallback, failureCallback) {
+      fetch('calendario_updates.php')
+        .then(resp => resp.json())
+        .then(data => successCallback(data))
+        .catch(failureCallback);
+    }
+
+    // Só altera o botão, não o resto do calendário
+    function renderizarBotaoAtualizacoes(arg) {
+      if (arg.event.title === "Atualizações") {
+        let btn = document.createElement('button');
+        btn.innerHTML = `<span class="material-symbols-rounded" style="vertical-align:middle;margin-right:4px;">event_available</span> Atualizações`;
+        btn.className = "btn-atualizacoes-fc";
+        btn.onclick = function(e) {
+          e.stopPropagation();
+          mostrarAtualizacoesModal(arg.event.extendedProps, arg.event.startStr);
+        };
+        return { domNodes: [btn] };
+      }
+      return null;
+    }
+
+    function mostrarAtualizacoesModal(props, data) {
+      let html = `
+        <div class="atualizacoes-data">
+          <span class="material-symbols-rounded" style="color:#1976d2;font-size:1.1em;">calendar_month</span>
+          ${new Date(data).toLocaleDateString('pt-BR')}
+        </div>
+        <hr style="margin:8px 0 12px 0;opacity:.18;">
+      `;
+      let conteudo = '';
+      if (props.receitas?.length) {
+        conteudo += `<div class="atualizacoes-label"><span class="material-symbols-rounded" style="color:#43a047;">trending_up</span>Receitas:</div>
+        <ul class="atualizacoes-lista">`;
+        props.receitas.forEach(r => {
+          conteudo += `<li><span class="material-symbols-rounded" style="color:#43a047;">trending_up</span> ${r.descricao} - R$${parseFloat(r.valor).toFixed(2)}</li>`;
+        });
+        conteudo += `</ul>`;
+      }
+      if (props.despesas?.length) {
+        conteudo += `<div class="atualizacoes-label"><span class="material-symbols-rounded" style="color:#e53935;">trending_down</span>Despesas:</div>
+        <ul class="atualizacoes-lista">`;
+        props.despesas.forEach(d => {
+          conteudo += `<li><span class="material-symbols-rounded" style="color:#e53935;">trending_down</span> ${d.descricao} - R$${parseFloat(d.valor).toFixed(2)}</li>`;
+        });
+        conteudo += `</ul>`;
+      }
+      if (props.planos?.length) {
+        conteudo += `<div class="atualizacoes-label"><span class="material-symbols-rounded" style="color:#1976d2;">lightbulb</span>Planos:</div>
+        <ul class="atualizacoes-lista">`;
+        props.planos.forEach(p => {
+          conteudo += `<li><span class="material-symbols-rounded" style="color:#1976d2;">lightbulb</span> ${p.descricao} - R$${parseFloat(p.valor).toFixed(2)} - ${p.prazo} meses</li>`;
+        });
+        conteudo += `</ul>`;
+      }
+      if (!props.receitas?.length && !props.despesas?.length && !props.planos?.length) {
+        conteudo += `<div class="no-updates"><span class="material-symbols-rounded" style="font-size:1.3em;vertical-align:middle;">info</span> Nenhuma atualização para este dia.</div>`;
+      }
+      document.getElementById("atualizacoesConteudo").innerHTML = html + conteudo;
+      let modal = new bootstrap.Modal(document.getElementById('modalAtualizacoes'));
+      modal.show();
+    }
   </script>
 </body>
 </html>

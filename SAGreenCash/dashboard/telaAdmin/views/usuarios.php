@@ -1,70 +1,77 @@
 <?php
+// Define o fuso horário para que as datas e horários fiquem corretos para o Brasil
 date_default_timezone_set('America/Sao_Paulo');
+
+// Inicia a sessão para garantir autenticação e controle de acesso
 session_start();
+
+// Inclui o arquivo de conexão com o banco de dados MySQL
 require "db.php";
 
-// Função para salvar foto
-function uploadFoto($inputName, $fotoAtual = null) {
-    if (isset($_FILES[$inputName]) && $_FILES[$inputName]['error'] === UPLOAD_ERR_OK) {
-        $ext = strtolower(pathinfo($_FILES[$inputName]['name'], PATHINFO_EXTENSION));
-        $permitidos = ['jpg','jpeg','png','gif','bmp','webp'];
-        if (!in_array($ext, $permitidos)) return $fotoAtual;
-        $nome = uniqid('foto_') . '.' . $ext;
-        $caminho = 'uploads/' . $nome;
-        if (!is_dir('uploads')) mkdir('uploads', 0777, true);
-        move_uploaded_file($_FILES[$inputName]['tmp_name'], $caminho);
-        return $caminho;
-    }
-    return $fotoAtual;
-}
-
-// CRUD - Cadastro/Edição/Desativar/Reativar
+// =====================================================
+// =============== CRUD DE USUÁRIOS ====================
+// =====================================================
+// Este bloco executa as operações de Cadastro, Edição e Ativar/Desativar usuários
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  // Cadastrar
+
+  // ----------- CADASTRO DE USUÁRIO -----------
   if (isset($_POST['acao']) && $_POST['acao'] === 'cadastrar') {
+      // Coleta os dados do formulário
       $nome = $_POST['nome'];
       $email = $_POST['email'];
-      $senha = md5($_POST['senha']);
-      $dataCadastro = date('Y-m-d H:i:s'); // Sempre agora!
-      $foto = uploadFoto('foto');
-      $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, senha, dataCadastro, foto, ativo, plano) VALUES (?, ?, ?, ?, ?, 1, NULL)");
-      $stmt->bind_param("sssss", $nome, $email, $senha, $dataCadastro, $foto);
+      $senha = md5($_POST['senha']); // Criptografa a senha em MD5 por compatibilidade
+      $dataCadastro = date('Y-m-d H:i:s'); // Registra a data/hora atual
+
+      // Prepara e executa a query de inserção, marcando o usuário como ativo e plano nulo
+      $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, senha, dataCadastro, ativo, plano) VALUES (?, ?, ?, ?, 1, NULL)");
+      $stmt->bind_param("ssss", $nome, $email, $senha, $dataCadastro);
       $stmt->execute();
+
+      // Redireciona para a própria página para evitar reenvio do formulário ao dar F5
       header("Location: ".$_SERVER['PHP_SELF']);
       exit;
   }
 
-  // Editar
+  // ----------- EDIÇÃO DE USUÁRIO -----------
   if (isset($_POST['acao']) && $_POST['acao'] === 'editar') {
-      $id = intval($_POST['id']);
+      $id = intval($_POST['id']); // ID do usuário a ser editado
       $nome = $_POST['nome'];
       $email = $_POST['email'];
-      $senha = $_POST['senha'];
-      $foto = uploadFoto('foto', $_POST['fotoAtual']);
+      $senha = $_POST['senha']; // Pode estar vazio
+
+      // Se uma nova senha foi informada, atualiza a senha criptografada
       if ($senha) {
-          $senhaHash = md5($senha); // Mantém compatibilidade com login
-          $stmt = $conn->prepare("UPDATE usuarios SET nome=?, email=?, senha=?, foto=? WHERE id=?");
-          $stmt->bind_param("ssssi", $nome, $email, $senhaHash, $foto, $id);
+          $senhaHash = md5($senha);
+          $stmt = $conn->prepare("UPDATE usuarios SET nome=?, email=?, senha=? WHERE id=?");
+          $stmt->bind_param("sssi", $nome, $email, $senhaHash, $id);
       } else {
-          $stmt = $conn->prepare("UPDATE usuarios SET nome=?, email=?, foto=? WHERE id=?");
-          $stmt->bind_param("sssi", $nome, $email, $foto, $id);
+          // Não atualiza a senha se ela não foi informada
+          $stmt = $conn->prepare("UPDATE usuarios SET nome=?, email=? WHERE id=?");
+          $stmt->bind_param("ssi", $nome, $email, $id);
       }
       $stmt->execute();
       header("Location: ".$_SERVER['PHP_SELF']);
       exit;
   }
-    // Desativar/Reativar
-    if (isset($_POST['toggle_ativo'])) {
-        $id = intval($_POST['id']);
-        $novo = $_POST['toggle_ativo'] == 'ativar' ? 1 : 0;
-        $stmt = $conn->prepare("UPDATE usuarios SET ativo=? WHERE id=?");
-        $stmt->bind_param("ii", $novo, $id);
-        $stmt->execute();
-        header("Location: ".$_SERVER['PHP_SELF']);
-        exit;
-    }
+
+  // ----------- ATIVAR / DESATIVAR USUÁRIO -----------
+  // Se o botão de ativar/desativar foi pressionado, altera o campo 'ativo'
+  if (isset($_POST['toggle_ativo'])) {
+      $id = intval($_POST['id']);
+      $novo = $_POST['toggle_ativo'] == 'ativar' ? 1 : 0; // 1 = ativa, 0 = desativa
+      $stmt = $conn->prepare("UPDATE usuarios SET ativo=? WHERE id=?");
+      $stmt->bind_param("ii", $novo, $id);
+      $stmt->execute();
+      header("Location: ".$_SERVER['PHP_SELF']);
+      exit;
+  }
 }
-// Busca/Filtro de usuários
+
+// =====================================================
+// =============== FILTRO / BUSCA DE USUÁRIOS ==========
+// =====================================================
+
+// Se o usuário digitou algo no campo filtro, aplica a busca por nome, email ou data de cadastro
 $filtro = trim($_GET['filtro'] ?? '');
 
 if ($filtro !== '') {
@@ -80,17 +87,25 @@ if ($filtro !== '') {
     $usuarios = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 } else {
+    // Se não houver filtro, busca todos os usuários cadastrados, do mais recente para o mais antigo
     $usuarios = $conn->query("SELECT * FROM usuarios ORDER BY id DESC")->fetch_all(MYSQLI_ASSOC);
 }
 
-// Função para cor do plano
+// =====================================================
+// =============== FUNÇÃO COR DO PLANO =================
+// =====================================================
+// Função que retorna a cor correspondente ao tipo de plano do usuário
 function planoColor($plano) {
-    if ($plano === 'Básico') return '#4caf50';
-    if ($plano === 'Intermediário') return '#ff9800';
-    if ($plano === 'Avançado') return '#f44336';
-    return '#232929';
+    if ($plano === 'Básico') return '#4caf50';         // Verde
+    if ($plano === 'Intermediário') return '#ff9800';  // Laranja
+    if ($plano === 'Avançado') return '#f44336';       // Vermelho
+    return '#232929';                                  // Cinza escuro (outros casos)
 }
-// KPIs: Total, Ativos, Desativados
+
+// =====================================================
+// =============== KPIs (Indicadores rápidos) ==========
+// =====================================================
+// Conta quantos usuários existem no total, quantos estão ativos e quantos estão desativados
 $totalUsuarios = count($usuarios);
 $totalAtivos = 0;
 $totalDesativados = 0;
@@ -103,7 +118,7 @@ foreach ($usuarios as $u) {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible=IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GreenCash - Usuários</title>
     <!-- ======= Estilos ====== -->
@@ -389,10 +404,6 @@ foreach ($usuarios as $u) {
 #usuarios-table tr {
     border-bottom: 1px solid #e5f5eb;
 }
-#usuarios-table td img {
-    display: block;
-    margin: 0 auto;
-}
 
 /* ============================= */
 /* == FORMULÁRIO E BOTÕES ====== */
@@ -525,61 +536,6 @@ foreach ($usuarios as $u) {
   color: #dc3545;
 }
 
-/* ===== Custom File Upload ===== */
-.custom-file-upload {
-  display: inline-block;
-  padding: 10px 20px;
-  cursor: pointer;
-  background-color: var(--green, #36b14a);
-  color: var(--white, #fff);
-  border: 2px solid var(--green, #36b14a);
-  border-radius: 8px;
-  font-size: 16px;
-  text-align: center;
-  transition: background-color 0.3s, color 0.3s, border 0.3s;
-  margin-top: 8px;
-}
-.custom-file-upload:hover {
-  background-color: var(--light-red, #e57373);
-  color: black;
-  border-color: var(--black2, #333);
-}
-
-/* ===== Modal (padrão) ===== */
-.modal-overlay {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  z-index: 1000;
-  transition: opacity 0.25s;
-}
-.modal-overlay.active {
-  display: flex;
-  opacity: 1;
-}
-.modal {
-  background: #F8F8F8;
-  border-radius: 18px;
-  box-shadow: 0 8px 40px #0004;
-  max-width: 420px;
-  width: 95%;
-  padding: 30px 28px 20px 28px;
-  position: relative;
-  font-family: 'Segoe UI', 'Arial', sans-serif;
-  color: #232323;
-  animation: slideModal .2s;
-  box-sizing: border-box;
-}
-.modal h2 {
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 1.6em;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-}
 @keyframes slideModal {
   from { opacity: 0; transform: translateY(-22px);}
   to   { opacity: 1; transform: translateY(0);}
@@ -724,7 +680,6 @@ foreach ($usuarios as $u) {
                         <table id="usuarios-table">
                             <thead>
                                 <tr>
-                                    <th>Imagem</th>
                                     <th>Nome</th>
                                     <th>Email</th>
                                     <th>Data de Cadastro</th>
@@ -735,13 +690,6 @@ foreach ($usuarios as $u) {
                             <tbody>
 <?php foreach ($usuarios as $u): ?>
     <tr class="<?=(isset($u['ativo']) && !$u['ativo']) ? 'user-inactive' : ''?>">
-        <td>
-            <?php if (!empty($u['foto']) && file_exists($u['foto'])): ?>
-                <img src="<?=htmlspecialchars($u['foto'])?>" style="width:40px;height:40px;border-radius:50%;object-fit:cover;<?=((isset($u['ativo']) && !$u['ativo'])?'opacity:0.3;filter:grayscale(60%);':'')?>">
-            <?php else: ?>
-                <span style="color:#b0b0b0;">Foto</span>
-            <?php endif; ?>
-        </td>
         <td>
             <?php if(isset($u['ativo']) && !$u['ativo']): ?>
                 <span style="color:#b0b0b0; opacity:0.5; font-style:italic; text-decoration: line-through;"><?=htmlspecialchars($u['nome']??'')?></span>
@@ -779,10 +727,9 @@ foreach ($usuarios as $u) {
 <div class="modal-overlay" id="cadastro-modal">
     <div class="modal">
         <h2 id="modal-title">Cadastrar Usuário</h2>
-        <form method="post" enctype="multipart/form-data" id="formCadastro">
+        <form method="post" id="formCadastro">
             <input type="hidden" name="acao" value="cadastrar" id="acao" />
             <input type="hidden" name="id" id="usuario_id" />
-            <input type="hidden" name="fotoAtual" id="fotoAtual" />
             <div class="input-group">
                 <label for="nome">Nome</label>
                 <input type="text" name="nome" id="cadastro-nome" required>
@@ -797,13 +744,6 @@ foreach ($usuarios as $u) {
                 <span id="toggleSenha" style="position: absolute; top: 38px; right: 10px; cursor: pointer;">
                     <i id="olhoSenha" class="fa-solid fa-eye"></i>
                 </span>
-            </div>
-            <div class="input-group">
-                <label for="foto">Foto</label>
-                <label for="cadastro-foto" class="custom-file-upload">
-                    Selecionar Foto
-                </label>
-                <input type="file" name="foto" id="cadastro-foto" style="display: none;">
             </div>
             <div class="actions">
                 <button type="button" class="cancel" onclick="closeModal()">Cancelar</button>
@@ -821,9 +761,6 @@ foreach ($usuarios as $u) {
         document.getElementById('cadastro-nome').value = usuario ? usuario.nome : "";
         document.getElementById('cadastro-email').value = usuario ? usuario.email : "";
         document.getElementById('cadastro-senha').value = "";
-// Supondo que usuario.dataCadastro vem do banco formato "YYYY-MM-DD HH:MM:SS"
-        document.getElementById('cadastro-data').value = usuario && usuario.dataCadastro ? usuario.dataCadastro.replace(' ', 'T').slice(0, 16) : "";
-        document.getElementById('fotoAtual').value = usuario ? usuario.foto : "";
     }
     function closeModal() {
         document.getElementById('cadastro-modal').classList.remove('active');
@@ -932,24 +869,6 @@ foreach ($usuarios as $u) {
   border: 1px solid var(--black2, #333);
   color: #111;
   text-align: center;
-}
-.custom-file-upload {
-  display: inline-block;
-  padding: 10px 20px;
-  cursor: pointer;
-  background-color: var(--green, #36b14a);
-  color: var(--white, #fff);
-  border: 2px solid var(--green, #36b14a);
-  border-radius: 8px;
-  font-size: 16px;
-  text-align: center;
-  transition: background-color 0.3s, color 0.3s, border 0.3s;
-  margin-top: 8px;
-}
-.custom-file-upload:hover {
-  background-color: var(--light-red, #e57373);
-  color: black;
-  border-color: var(--black2, #333);
 }
 @keyframes slideModal {
   from { opacity: 0; transform: translateY(-22px);}

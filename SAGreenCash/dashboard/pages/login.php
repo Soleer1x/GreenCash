@@ -546,7 +546,7 @@ button[type="submit"]:hover {
     document.getElementById('modal-sucesso').style.display = 'flex';
     setTimeout(function(){
       <?php if($usuario_tipo == 1): ?>
-        window.location.href = '/SAGreenCash/dashboard/telaAdmin/views/Painel.php';
+        window.location.href = '/003%20-%20Turm_1o_Semestre_2025/SAGreenCash/dashboard/telaAdmin/views/Painel.php';
       <?php else: ?>
         window.location.href = 'dashboard.php';
       <?php endif; ?>

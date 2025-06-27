@@ -1,26 +1,46 @@
 <?php
+// Inicia a sessão para manter o usuário logado entre as páginas
 session_start();
+
+// Verifica se existe um usuário autenticado na sessão.
+// Caso não exista, redireciona para a tela de login e encerra o script atual.
+// Isso garante que apenas usuários autenticados possam acessar esse painel.
 if (!isset($_SESSION["usuario"])) {
   header("Location: ../login.php");
   exit;
 }
+
+// Importa o arquivo responsável pela conexão com o banco de dados MySQL.
+// A variável $conn será usada para executar queries SQL.
 require "db.php";
 
-// Total de usuários
+// ------------ INDICADORES DO PAINEL ------------
+
+// 1. Busca o número total de usuários cadastrados no banco.
+// - Executa uma consulta SQL que retorna o total de linhas na tabela 'usuarios'.
+// - fetch_row()[0] pega o primeiro campo do resultado, que é o número total.
 $totalUsuarios = $conn->query("SELECT COUNT(*) FROM usuarios")->fetch_row()[0];
 
-// Usuários por data (contagem por dia)
+// 2. Monta um array associativo $usuariosPorData, onde cada chave é uma data (ex: '2025-06-27')
+//    e o valor é o total de usuários cadastrados naquela data.
+// - Executa uma consulta SQL agrupando por data de cadastro.
+// - Utilizado para gerar o gráfico de evolução de cadastros.
 $usuariosPorData = [];
 $result = $conn->query("SELECT DATE(dataCadastro) as dia, COUNT(*) as total FROM usuarios GROUP BY dia ORDER BY dia ASC");
 while ($row = $result->fetch_assoc()) {
     $usuariosPorData[$row['dia']] = (int)$row['total'];
 }
 
-// Suporte realizados e em andamento
+// 3. Conta o número total de chamados de suporte que já foram respondidos.
+// - Considera respondido se existir ao menos um registro relacionado na tabela 'suporte_resposta'.
+// - Utiliza subquery EXISTS para checar se há resposta para o chamado.
 $totalRealizados = $conn->query("
     SELECT COUNT(*) FROM suporte 
     WHERE EXISTS (SELECT 1 FROM suporte_resposta sr WHERE sr.suporte_id = suporte.id)
 ")->fetch_row()[0];
+
+// 4. Conta o número total de chamados de suporte que ainda não foram respondidos.
+// - Considera não respondido se NÃO existe nenhum registro na tabela 'suporte_resposta' para aquele chamado.
 $totalAndamento = $conn->query("
     SELECT COUNT(*) FROM suporte 
     WHERE NOT EXISTS (SELECT 1 FROM suporte_resposta sr WHERE sr.suporte_id = suporte.id)
@@ -190,91 +210,104 @@ $totalAndamento = $conn->query("
     .btn-logout-cancelar:hover { background: #bbb; }
   </style>
   <script>
-    // Menu toggle
-    const toggle = document.querySelector('.toggle');
-    const navigation = document.querySelector('.navigation');
-    const main = document.querySelector('.main');
-    toggle.onclick = function () {
-      navigation.classList.toggle('active');
-      main.classList.toggle('active');
-    };
+// Seleciona os elementos do DOM para o menu lateral e o conteúdo principal
+const toggle = document.querySelector('.toggle');
+const navigation = document.querySelector('.navigation');
+const main = document.querySelector('.main');
 
-    function abrirModalLogout() {
-      document.getElementById('logoutModal').style.display = 'flex';
+// Função para alternar a classe 'active' no menu lateral e no conteúdo principal
+// Isso permite que o menu seja "escondido" ou "mostrado" em telas menores (responsividade)
+toggle.onclick = function () {
+  navigation.classList.toggle('active');
+  main.classList.toggle('active');
+};
+
+// Função para exibir o modal de confirmação de logout
+function abrirModalLogout() {
+  document.getElementById('logoutModal').style.display = 'flex';
+}
+// Função para fechar o modal de logout
+function fecharModalLogout() {
+  document.getElementById('logoutModal').style.display = 'none';
+}
+// Função para efetivar o logout, redirecionando para o script de logout do backend
+function confirmarLogout() {
+  window.location.href = '../../../dashboard/pages/logout.php';
+}
+
+// ------------ GRÁFICOS (Chart.js) ------------
+
+// Recebe do PHP os dados em formato JSON para o gráfico de evolução de usuários
+const usuariosPorData = <?php echo json_encode($usuariosPorData); ?>;
+// Recebe do PHP os totais de chamados realizados e em andamento
+const totalRealizados = <?php echo (int)$totalRealizados; ?>;
+const totalAndamento = <?php echo (int)$totalAndamento; ?>;
+
+// GRÁFICO DE LINHA - Evolução dos cadastros de usuários
+(function() {
+  // Extrai as datas e os valores do array associativo
+  const datas = Object.keys(usuariosPorData);
+  const valores = datas.map(data => usuariosPorData[data]);
+  // Seleciona o canvas do gráfico
+  const ctx = document.getElementById('grafico-usuarios-data').getContext('2d');
+  // Cria o gráfico do tipo 'line' com as datas no eixo X e os totais no eixo Y
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: datas,
+      datasets: [{
+        label: 'Usuários Cadastrados',
+        data: valores,
+        borderColor: '#4caf50',
+        backgroundColor: 'rgba(76,175,80,0.12)',
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: '#4caf50',
+        fill: true,
+        tension: 0.35 // Deixa a linha do gráfico mais suave (curva)
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
     }
-    function fecharModalLogout() {
-      document.getElementById('logoutModal').style.display = 'none';
-    }
-    function confirmarLogout() {
-      window.location.href = '../../../dashboard/pages/logout.php';
-    }
+  });
+})();
 
-    // GRÁFICOS
-    const usuariosPorData = <?php echo json_encode($usuariosPorData); ?>;
-    const totalRealizados = <?php echo (int)$totalRealizados; ?>;
-    const totalAndamento = <?php echo (int)$totalAndamento; ?>;
-
-    // Gráfico Usuários (LINHA ELEGANTE)
-    (function() {
-      const datas = Object.keys(usuariosPorData);
-      const valores = datas.map(data => usuariosPorData[data]);
-      const ctx = document.getElementById('grafico-usuarios-data').getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: datas,
-          datasets: [{
-            label: 'Usuários Cadastrados',
-            data: valores,
-            borderColor: '#4caf50',
-            backgroundColor: 'rgba(76,175,80,0.12)',
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBackgroundColor: '#4caf50',
-            fill: true,
-            tension: 0.35 // curva elegante!
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true } }
-        }
-      });
-    })();
-
-    // Gráfico Suporte
-    (function() {
-      const ctx = document.getElementById('grafico-atendimentos').getContext('2d');
-      new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Realizados', 'Em Andamento'],
-          datasets: [{
-            label: 'Atendimentos',
-            data: [totalRealizados, totalAndamento],
-            backgroundColor: ['#1E88E5', '#8E24AA'],
-            hoverOffset: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { position: 'top' },
-            tooltip: {
-              callbacks: {
-                label: function (context) {
-                  const total = totalRealizados + totalAndamento;
-                  const value = context.raw;
-                  const pct = total > 0 ? (value / total * 100).toFixed(1) : 0;
-                  return context.label + ': ' + value + ' (' + pct + '%)';
-                }
-              }
+// GRÁFICO DE ROSCA - Proporção de chamados realizados x em andamento
+(function() {
+  const ctx = document.getElementById('grafico-atendimentos').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Realizados', 'Em Andamento'],
+      datasets: [{
+        label: 'Atendimentos',
+        data: [totalRealizados, totalAndamento],
+        backgroundColor: ['#1E88E5', '#8E24AA'],
+        hoverOffset: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            // Exibe no tooltip o valor absoluto e a porcentagem de cada fatia do gráfico
+            label: function (context) {
+              const total = totalRealizados + totalAndamento;
+              const value = context.raw;
+              const pct = total > 0 ? (value / total * 100).toFixed(1) : 0;
+              return context.label + ': ' + value + ' (' + pct + '%)';
             }
           }
         }
-      });
-    })();
+      }
+    }
+  });
+})();
   </script>
 </body>
 </html>
