@@ -1,25 +1,33 @@
-💰 GreenCash – Controle Financeiro Pessoal
-GreenCash é um sistema completo de gestão financeira pessoal, feito para ajudar você a organizar suas finanças, controlar gastos, visualizar entradas e saídas, e planejar seu futuro com mais inteligência.
+# GreenCash – Controle Financeiro Pessoal
 
-🔧 Funcionalidades principais
-🧾 Cadastro e visualização de despesas e receitas
+GreenCash é um sistema completo de gestão financeira pessoal, desenvolvido para ajudar você a organizar suas finanças, controlar gastos, visualizar entradas e saídas e planejar seu futuro com inteligência.
 
-📊 Painel com gráficos interativos (entradas, perdas, contas pagas)
+## :star: Funcionalidades principais
+- Cadastro e visualização de despesas e receitas
 
-📅 Filtros por data, tipo de despesa e categoria
+## :bar_chart: Painel com gráficos interativos
+- Visualize entradas, perdas e contas pagas de forma intuitiva
 
-📁 Histórico completo de movimentações
+## :bookmark_tabs: Filtros
+- Filtros por data, tipo de despesa e categoria
 
-👤 Sistema de login para manter seus dados seguros
+## :ledger: Histórico
+- Histórico completo de movimentações
 
-📌 Tecnologias utilizadas
-Frontend: HTML5, CSS3, JavaScript
+## :lock: Sistema de login
+- Sistema de login para manter seus dados seguros
 
-Backend: PHP, MySQL
+## :rocket: Tecnologias utilizadas
+- **Frontend:** HTML5, CSS3, JavaScript
+- **Backend:** PHP, MySQL
+- **Gráficos:** Chart.js
 
-Gráficos: Chart.js
+## :art: Template base
+- Material Dashboard 3
 
-Template base: Material Dashboard 3
-
-🧠 Objetivo do Projeto
+## :bulb: Objetivo do Projeto
 Oferecer uma plataforma simples, funcional e intuitiva para qualquer pessoa controlar sua vida financeira, acompanhar resultados e tomar decisões mais conscientes sobre seu dinheiro.
+
+---
+
+![image1](image1)
