@@ -30,4 +30,5 @@ Oferecer uma plataforma simples, funcional e intuitiva para qualquer pessoa cont
 
 ---
 
-![image1](image1)
+![logo](https://github.com/user-attachments/assets/f3912282-45dd-4518-944c-d9f0a501226e)
+
