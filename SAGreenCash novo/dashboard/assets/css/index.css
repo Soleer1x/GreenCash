@@ -1,0 +1,146 @@
+	#home {
+		background: #2b9c27;
+		color: white;
+		animation: fadeIn 1s ease-out;
+	}
+
+	.caixa {
+		padding: 60px 0;
+		border-bottom: 1px solid #e5e5e5;
+		animation: fadeIn 1s ease-out;
+	}
+
+	footer p a {
+		margin: 5px 15px;
+	}
+
+	footer {
+		background-color: #f8f9fa;
+		padding: 20px 0;
+		animation: fadeIn 1.5s ease-out;
+	}
+
+	footer a {
+		color: #343a40;
+	}
+
+	footer a:hover {
+		text-decoration: underline;
+	}
+
+	/* Estilo para os cartões de planos */
+	.card {
+		transition: transform 0.3s, box-shadow 0.3s;
+	}
+
+	.card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+	}
+
+	.card-title {
+		font-weight: bold;
+	}
+
+	/* Estilo para o botão de cadastro */
+	.btn-primary {
+		background-color: #d4a107;
+		border-color: #d4a107;
+		transition: all 0.3s ease; /* Transição suave para todos os efeitos de botão */
+	}
+
+	.btn-primary:hover {
+		background-color: #d4a107;
+		border-color: #d4a107;
+		transform: scale(1.1); /* Aumenta o tamanho do botão */
+		box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Adiciona sombra ao redor do botão */
+	}
+
+	/* Estilo para o botão de entrar */
+	.btn-outline-light {
+		color: #fff;
+		border-color: rgba(255, 255, 255, 0.5);
+		transition: all 0.3s ease;
+	}
+
+	.btn-outline-light:hover {
+		color: #fff;
+		background-color: rgba(255, 255, 255, 0.1);
+		border-color: rgba(255, 255, 255, 0.5);
+		transform: scale(1.1);
+		box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+	}
+
+	/* Animação para os links e botões ao passar o mouse */
+	.navbar-nav .nav-link,
+	.card .btn,
+	.btn-outline-light {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.navbar-nav .nav-link:hover,
+	.card .btn:hover,
+	.btn-outline-light:hover {
+		color: #fff;
+		background-color: #d4a107;
+	}
+
+	.navbar-nav .nav-link::before,
+	.card .btn::before,
+	.btn-outline-light::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 300%;
+		height: 300%;
+		background-color: rgba(0, 123, 255, 0.2);
+		transition: all 0.5s ease;
+		transform: translate(-50%, -50%) scale(0);
+		border-radius: 50%;
+	}
+
+	.navbar-nav .nav-link:hover::before,
+	.card .btn:hover::before,
+	.btn-outline-light:hover::before {
+		transform: translate(-50%, -50%) scale(1);
+	}
+
+	/* Efeito de sombra nos cards */
+	.card {
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.card:hover {
+		transform: translateY(-10px);
+		box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.15);
+	}
+
+	/* Adicionando efeito de sombra ao redor dos botões de plano */
+	#planos .card {
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+	}
+
+	#planos .card:hover {
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+		transform: translateY(-5px);
+	}
+
+	/* Animação geral de entrada para os elementos */
+	@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	}
+
+	h1, h2, h4, p {
+		animation: fadeIn 1.5s ease-out;
+	}
+

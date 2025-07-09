@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>GreenCash | Seu Controle Financeiro Pessoal Inteligente</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,700|Roboto:400,700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --main-green: #16e86c;
+      --green-dark: #01ac45;
+      --main-blue: #00365f;
+      --main-gray: #6a6a6a;
+      --radius-lg: 30px;
+      --shadow-main: 0 4px 40px rgba(22,212,99,0.10);
+      --shadow-light: 0 2px 12px #b6e2c739;
+      --bg-gradient: linear-gradient(120deg, #f9fff6 0%, #e8ffe4 100%);
+      --text-dark: #1a3513;
+      --header-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      --brand-gradient: linear-gradient(90deg, #01ac45 0%, #16d463 100%);
+    }
+    html, body {
+      font-family: 'Inter', 'Roboto', Arial, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-dark);
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    .navbar {
+      background: #fff;
+      box-shadow: var(--header-shadow);
+      border-bottom: 2px solid var(--main-green);
+      font-size: 1.08rem;
+      z-index: 10;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 2.1rem;
+      color: var(--green-dark) !important;
+      letter-spacing: -2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+    .gc-logo-navbar {
+      height: 54px;
+      width: auto;
+      max-width: 180px;
+      object-fit: contain;
+      display: inline-block;
+      border-radius: 8px;
+      box-shadow: 0 2px 16px #16d46325;
+      background: #fff;
+      vertical-align: middle;
+      margin-right: 0;
+    }
+    .navbar-nav .nav-link {
+      color: var(--green-dark) !important;
+      margin-left: 1.5rem;
+      font-weight: 500;
+      font-size: 1.07rem;
+      transition: color .18s;
+      position: relative;
+    }
+    .navbar-nav .nav-link.active, .navbar-nav .nav-link:hover {
+      color: var(--main-green) !important;
+      text-decoration: underline;
+    }
+    .btn-main {
+      background: var(--main-green);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 9px 34px;
+      border: none;
+      font-size: 1.12rem;
+      transition: background .2s, box-shadow .2s;
+      box-shadow: 0 2px 18px #16d46329;
+    }
+    .btn-main:hover, .btn-main:focus {
+      background: var(--green-dark);
+      color: #fff;
+      box-shadow: 0 4px 32px #16d46332;
+    }
+    .btn-outline-main {
+      border: 2px solid var(--main-green);
+      color: var(--green-dark);
+      background: transparent;
+      font-weight: 600;
+      border-radius: 20px;
+      padding: 8px 26px;
+      font-size: 1.06rem;
+      transition: background .2s, color .2s;
+    }
+    .btn-outline-main:hover, .btn-outline-main:focus {
+      background: var(--main-green);
+      color: #fff;
+    }
+    /* HERO */
+    .hero-section {
+      background: linear-gradient(120deg,#fff 60%,#e8ffe4 100%);
+      padding: 90px 0 70px 0;
+      box-shadow: var(--shadow-main);
+      border-radius: 0 0 70px 70px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .hero-title {
+      font-size: 3.1rem;
+      font-weight: 900;
+      color: var(--green-dark);
+      margin-bottom: 14px;
+      letter-spacing: -1px;
+      max-width: 820px;
+      line-height: 1.1;
+    }
+    .hero-lead {
+      color: var(--main-gray);
+      font-size: 1.27rem;
+      margin-bottom: 38px;
+      max-width: 660px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-img {
+      max-width: 400px;
+      width: 100%;
+      margin: 0 auto;
+      display: block;
+      filter: drop-shadow(0 8px 24px #83f3ab23);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 2px 18px #01ac4512;
+    }
+    .hero-img-up {
+      margin-top: -100px;
+    }
+    @media (max-width: 991px) {
+      .hero-title { font-size: 2.05rem; }
+      .features-title, .plans-title, .feedback-title { font-size: 1.16rem; }
+      .features-grid, .feedback-cards { gap: 22px 0; }
+      .hero-img-up { margin-top: -18px; }
+    }
+    @media (max-width: 768px) {
+      .hero-section { padding: 36px 0 18px 0; border-radius: 0 0 32px 32px;}
+      .features-section, .plans-section, .cta-section, .feedback-section { padding: 18px 0 18px 0;}
+      .features-grid, .feedback-cards { gap: 13px 0;}
+      .plan-card { min-width: 100%; }
+      .plan-card { padding: 18px 7px 13px 7px; }
+      .analytics-section { max-width: 96vw; }
+      .newsletter-section, .cta-section { padding: 18px 0 12px 0; }
+    }
+    .hero-badges {
+      margin-top: 26px;
+      gap: 18px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-badge {
+      background: #e6fff1;
+      color: var(--green-dark);
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 19px;
+      padding: 7px 18px;
+      margin: 3px;
+      box-shadow: 0 1px 4px #d5f9e9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .scroll-down-arrow {
+      font-size: 2.4rem;
+      color: var(--main-green);
+      margin-top: 38px;
+      animation: bounce 1.8s infinite;
+      display: inline-block;
+      cursor: pointer;
+    }
+    @keyframes bounce {
+      0%,100%{transform:translateY(0);}
+      50%{transform:translateY(16px);}
+    }
+    /* Analytics/Counter Section */
+    .analytics-section {
+      background: #fff;
+      margin-top: -40px;
+      margin-bottom: 38px;
+      padding: 34px 0 14px 0;
+      border-radius: 30px;
+      box-shadow: 0 4px 28px #16d46316;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 2;
+    }
+    .analytics-grid {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+    .analytics-item {
+      text-align: center;
+      min-width: 140px;
+    }
+    .analytics-icon {
+      font-size: 2.15rem;
+      color: var(--main-green);
+      margin-bottom: 2px;
+    }
+    .analytics-number {
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: var(--green-dark);
+      letter-spacing: -1px;
+    }
+    .analytics-label {
+      color: var(--main-gray);
+      font-size: 1.07rem;
+      font-weight: 500;
+    }
+    /* Features */
+    .features-section {
+      background: #fff;
+      padding: 68px 0 62px 0;
+      box-shadow: var(--shadow-light);
+    }
+    .features-title {
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--green-dark);
+      text-align: center;
+      margin-bottom: 14px;
+      letter-spacing: -1px;
+    }
+    .features-sub {
+      color: var(--main-gray);
+      text-align: center;
+      margin-bottom: 46px;
+      font-size: 1.17rem;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
+      gap: 38px 32px;
+      max-width: 1110px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: #fbfefd;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 2px 12px rgba(22,212,99,0.08);
+      padding: 32px 22px 22px 22px;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition: box-shadow .22s, transform .22s;
+      position: relative;
+      border-left: 6px solid var(--main-green);
+    }
+    .feature-card:hover {
+      box-shadow: 0 10px 38px #16d46322;
+      transform: translateY(-4px) scale(1.025);
+    }
+    .feature-icon {
+      font-size: 2.2rem;
+      color: var(--green-dark);
+      background: #f5fff4;
+      padding: 13px 13px 8px 13px;
+      border-radius: 14px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px #eafff1;
+    }
+    .feature-title {
+      font-weight: 700;
+      color: var(--main-blue);
+      font-size: 1.12rem;
+      margin-bottom: 8px;
+      margin-top: 0;
+    }
+    .feature-desc {
+      color: var(--main-gray);
+      font-size: 1.04rem;
+      margin-bottom: 0;
+    }
+    /* Demo Section */
+    .demo-section {
+      padding: 60px 0 54px 0;
+      background: linear-gradient(100deg,#e8ffe4 50%,#fff 100%);
+      box-shadow: 0 2px 18px #16d46316;
+    }
+    .demo-title {
+      color: var(--green-dark);
+      font-size: 1.29rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 13px;
+    }
+    .demo-desc {
+      color: var(--main-gray);
+      text-align: center;
+      margin-bottom: 36px;
+      font-size: 1.07rem;
+    }
+    .demo-video {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      max-width: 700px;
+      border-radius: 20px;
+      box-shadow: 0 2px 18px #01ac4511;
+      overflow: hidden;
+    }
+    /* Newsletter */
+    .newsletter-section {
+      background: #fff;
+      padding: 54px 0 32px 0;
+      text-align: center;
+      border-radius: 38px;
+      box-shadow: 0 2px 18px #16d46316;
+      margin: 65px auto 38px auto;
+      max-width: 700px;
+    }
+    .newsletter-title {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 13px;
+    }
+    .newsletter-sub {
+      color: #4e6484;
+      font-size: 1.02rem;
+      margin-bottom: 25px;
+    }
+    .newsletter-form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 420px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 3px 16px rgba(34,28,6,0.10);
+      padding: 4px 8px;
+    }
+    .newsletter-form input[type="email"] {
+      border: none;
+      background: none;
+      outline: none;
+      padding: 12px 18px;
+      font-size: 1.08rem;
+      flex: 1;
+      border-radius: 20px;
+      color: #222;
+    }
+    .newsletter-form button {
+      background: var(--main-green);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 22px;
+      font-weight: bold;
+      font-size: 1.04rem;
+      margin-left: 8px;
+      transition: background .18s;
+      box-shadow: 0 3px 12px #00000012;
+    }
+    .newsletter-form button:hover {
+      background: var(--green-dark);
+      color: #fff;
+    }
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(100deg, #e8ffe4 0%, #16d463 200%);
+      color: #1a3513;
+      padding: 75px 0 72px 0;
+      text-align: center;
+      border-radius: 48px;
+      margin: 70px auto 45px auto;
+      box-shadow: var(--shadow-main);
+      max-width: 970px;
+    }
+    .cta-title {
+      font-size: 1.64rem;
+      font-weight: 900;
+      margin-bottom: 13px;
+      color: var(--green-dark);
+      letter-spacing: -.5px;
+    }
+    .cta-lead {
+      color: #1a3513;
+      font-size: 1.12rem;
+      margin-bottom: 32px;
+    }
+    /* Planos */
+    .plans-section {
+      background: #fff;
+      padding: 78px 0 90px 0;
+      box-shadow: var(--shadow-light);
+    }
+    .plans-title {
+      color: var(--green-dark);
+      font-size: 1.55rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      text-align: center;
+      letter-spacing: -.5px;
+    }
+    .plans-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 44px 28px;
+      justify-content: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .plan-card {
+      background: #fafdff;
+      border-radius: 24px;
+      box-shadow: 0 2px 18px #b6e2c72a;
+      padding: 40px 27px 28px 27px;
+      flex:1 1 260px;
+      max-width: 355px;
+      min-width: 215px;
+      border-left: 6px solid var(--main-green);
+      border-right: 2px solid #eaf8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position:relative;
+      transition: box-shadow .21s, transform .21s;
+    }
+    .plan-card:hover {
+      box-shadow: 0 10px 36px #01ac4521;
+      transform: translateY(-5px) scale(1.04);
+    }
+    .plan-name {
+      font-weight: 700;
+      color: var(--green-dark);
+      font-size: 1.16rem;
+      margin-bottom: 3px;
+    }
+    .plan-price {
+      font-size: 1.55rem;
+      font-weight: 900;
+      color: var(--green-dark);
+      background: linear-gradient(98deg, #eafff7 60%, #b6ffc7 100%);
+      padding: 8px 20px;
+      border-radius: 13px;
+      margin-bottom: 13px;
+      box-shadow: 0 2px 18px #b6e2c72a;
+    }
+    .plan-desc {
+      font-size: 1.03rem;
+      font-weight: 500;
+      margin-bottom: 13px;
+      color: #2e6346;
+      background: #edfff7;
+      border-radius: 9px;
+      padding: 5px 15px;
+    }
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 18px 0;
+      color: var(--main-gray);
+      font-size: 1.01rem;
+      text-align: left;
+      width: 100%;
+    }
+    .plan-features li {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+    .plan-features li i {
+      margin-right: 10px;
+      color: var(--main-green);
+    }
+    .plan-feature-disabled {
+      color: #c1c1c1;
+      text-decoration: line-through;
+    }
+    /* Feedbacks */
+    .feedback-section {
+      background: #f6fff4;
+      padding: 80px 0 100px 0;
+    }
+    .feedback-title {
+      color: var(--green-dark);
+      font-size: 1.38rem;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 17px;
+    }
+    .feedback-sub {
+      color: var(--main-gray);
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 1.07rem;
+    }
+    .feedback-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 44px 26px;
+      justify-content: center;
+      max-width: 1150px;
+      margin: 0 auto;
+    }
+    .feedback-card {
+      background: #fff;
+      border-radius: 17px;
+      box-shadow: 0 2px 24px #16d4630d;
+      padding: 27px 22px 18px 22px;
+      min-width: 250px;
+      max-width: 350px;
+      flex: 1 1 250px;
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .feedback-stars {
+      color: var(--main-green);
+      margin-bottom: 9px;
+      font-size: 1.15rem;
+    }
+    .feedback-author {
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-top: 13px;
+      font-size: 1.04rem;
+    }
+    .feedback-text {
+      color: var(--main-gray);
+      font-size: 1.01rem;
+      text-align: center;
+    }
+    /* FOOTER */
+    footer.footer-modern-aligned {
+      background: linear-gradient(90deg, #fafdff 0%, #e8ffe4 100%);
+      border-top: 2px solid #16d463;
+      font-size: 1rem;
+      box-shadow: 0 -2px 10px #16d46311;
+      letter-spacing: 0;
+    }
+    .footer-desc {
+      color: #2e6346;
+      opacity: .96;
+      font-size: .99rem;
+    }
+    .footer-address {
+      color: #356b4d;
+      opacity: .78;
+      margin-top: 7px;
+      margin-bottom: 0;
+    }
+    .footer-links a {
+      color: #1a3513;
+      text-decoration: none;
+      font-size: 1.08rem;
+      font-weight: 500;
+      opacity: .93;
+      transition: color 0.16s, opacity 0.13s;
+      position: relative;
+      padding: 2px 0;
+    }
+    .footer-links a:hover {
+      color: #16d463;
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .footer-social a {
+      color: #16d463;
+      font-size: 1.3rem;
+      transition: color 0.19s, transform 0.18s;
+      opacity: .82;
+      display: inline-block;
+    }
+    .footer-social a:hover {
+      color: #01ac45;
+      transform: scale(1.12);
+      opacity: 1;
+    }
+    .footer-contact {
+      color: #1a3513;
+      text-decoration: none;
+      opacity: .9;
+      transition: color .18s;
+    }
+    .footer-contact:hover {
+      color: #16d463;
+      text-decoration: underline;
+      opacity: 1;
+    }
+    .footer-hr {
+      border: none;
+      border-top: 1px solid #b6e2c7;
+      opacity: .19;
+      margin: 18px 0 12px 0;
+    }
+    .footer-mini-copy {
+      opacity: .7;
+      letter-spacing: 0.01em;
+      margin-bottom: 0;
+    }
+    @media (max-width: 991px) {
+      .footer-modern-aligned .row > div { text-align: center !important; }
+    }
+    @media (max-width: 575px) {
+      .footer-desc {margin-left:0;margin-right:0;}
+      .footer-links {flex-direction: column !important; gap: 8px !important;}
+      .footer-social {gap: 14px !important;}
+    }
+    /* About section */
+    .about-section {
+      padding: 32px 0 20px 0;
+      margin: 28px auto 28px auto;
+      max-width: 950px;
+      border-radius: 20px;
+      background: none !important;
+      box-shadow: none !important;
+    }
+    .about-section .features-title { font-size:1.42rem;margin-bottom:10px;}
+    .about-section .features-sub { font-size:1.04rem; margin-bottom:18px;}
+    .about-section p, .about-section ul { font-size:0.99rem;}
+    @media (max-width: 991px) {
+      .about-section { padding: 18px 0 12px 0; }
+      .about-section .row { flex-direction: column-reverse; }
+      .about-section img { margin-bottom: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="logo.png" alt="GreenCash logo" class="gc-logo-navbar">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="#features">Recursos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#plans">Planos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#feedbacks">Feedbacks</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">Sobre nós</a></li>
+          <li class="nav-item ms-2">
+            <a href="login.php" class="btn btn-main">Acessar</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section d-flex flex-column align-items-center text-center">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-7 order-2 order-lg-1 animate__animated animate__fadeInLeft">
+          <h1 class="hero-title mb-3">Controle financeiro pessoal fácil, visual e poderoso</h1>
+          <div class="hero-lead">
+            Organize seus gastos, alcance objetivos, conquiste tranquilidade.<br>
+            O GreenCash te ajuda a cuidar do seu dinheiro com tecnologia, segurança e simplicidade.
+          </div>
+          <div class="d-flex flex-wrap justify-content-center gap-2 mb-2">
+            <a href="login.php" class="btn btn-main btn-lg px-5 mt-2 me-2">Começar agora</a>
+            <a href="#demo" class="btn btn-outline-main btn-lg px-4 mt-2">Veja a plataforma</a>
+          </div>
+          <div class="hero-badges">
+            <span class="hero-badge"><i class="fas fa-lock"></i> Privacidade total</span>
+            <span class="hero-badge"><i class="fas fa-bullseye"></i> Metas visuais</span>
+            <span class="hero-badge"><i class="fas fa-chart-pie"></i> Gráficos claros</span>
+          </div>
+          <div class="scroll-down-arrow" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'});">
+            <i class="fas fa-angle-double-down"></i>
+          </div>
+        </div>
+        <div class="col-lg-5 order-1 order-lg-2 mb-4 mb-lg-0 animate__animated animate__fadeInRight">
+          <img src="controle finaceiro.png"
+               alt="Dashboard financeiro pessoal GreenCash" class="hero-img shadow hero-img-up"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Analytics Section (Counters) -->
+  <section class="analytics-section">
+    <div class="container">
+      <div class="analytics-grid">
+        <div class="analytics-item">
+          <div class="analytics-icon"><i class="fas fa-wallet"></i></div>
+          <div class="analytics-number counter" data-target="250000">0</div>
+          <div class="analytics-label">Contas pessoais organizadas</div>
+        </div>
+        <div class="analytics-item">
+          <div class="analytics-icon"><i class="fas fa-bullseye"></i></div>
+          <div class="analytics-number counter" data-target="18000">0</div>
+          <div class="analytics-label">Metas atingidas</div>
+        </div>
+        <div class="analytics-item">
+          <div class="analytics-icon"><i class="fas fa-piggy-bank"></i></div>
+          <div class="analytics-number counter" data-target="97000">0</div>
+          <div class="analytics-label">Sonhos realizados</div>
+        </div>
+        <div class="analytics-item">
+          <div class="analytics-icon"><i class="fas fa-star"></i></div>
+          <div class="analytics-number counter" data-target="4.9" data-decimal="true">0</div>
+          <div class="analytics-label">Nota de avaliação</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <h2 class="features-title">Todas as ferramentas para sua vida financeira</h2>
+      <div class="features-sub">Tudo o que você precisa para controlar gastos, planejar e realizar seus sonhos.</div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon"><i class="fas fa-mobile-alt"></i></span>
+          <div class="feature-title">Interface mobile e web</div>
+          <div class="feature-desc">Acompanhe sua vida financeira de onde estiver, com experiência fluida no app e no navegador.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon"><i class="fas fa-pie-chart"></i></span>
+          <div class="feature-title">Gráficos interativos</div>
+          <div class="feature-desc">Visualize seu orçamento, gastos e evolução em gráficos simples, bonitos e fáceis de entender.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon"><i class="fas fa-coins"></i></span>
+          <div class="feature-title">Controle de gastos automático</div>
+          <div class="feature-desc">Lance despesas por categoria, receba alertas e identifique desperdícios sem esforço.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon"><i class="fas fa-bullseye"></i></span>
+          <div class="feature-title">Metas e objetivos</div>
+          <div class="feature-desc">Defina metas de economia, acompanhe seu progresso e seja recompensado a cada conquista.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon"><i class="fas fa-bolt"></i></span>
+          <div class="feature-title">Automação inteligente</div>
+          <div class="feature-desc">Importe extratos, automatize lançamentos recorrentes e simplifique sua rotina.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon"><i class="fas fa-shield-alt"></i></span>
+          <div class="feature-title">Privacidade e segurança</div>
+          <div class="feature-desc">Seus dados protegidos por criptografia, autenticação 2FA e política de privacidade transparente.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+      <div class="container">
+        <div class="demo-title">Veja como é fácil cuidar das suas finanças</div>
+        <div class="demo-desc">Assista uma demonstração rápida e descubra como o GreenCash pode transformar sua vida financeira!</div>
+        <div class="demo-video">
+          <video width="100%" height="370" controls poster="unnamed.png" style="border-radius:20px;box-shadow:0 2px 18px #01ac4511;display:block;">
+            <source src="videoexemplo.mp4" type="video/mp4">
+            Seu navegador não suporta o elemento de vídeo.
+          </video>
+        </div>
+      </div>
+    </section>
+  
+    <!-- CTA Section -->
+    <section class="cta-section my-5">
+      <div class="container">
+        <div class="cta-title mb-3">Dê o próximo passo rumo à liberdade financeira</div>
+        <div class="cta-lead mb-4">
+          Faça parte do GreenCash e tenha controle total do seu dinheiro.<br>
+          Experimente grátis e comece a construir seu futuro hoje!
+        </div>
+        <a href="login.php" class="btn btn-main btn-lg">Criar minha conta</a>
+      </div>
+    </section>
+  
+    <!-- Planos -->
+    <section class="plans-section" id="plans">
+      <div class="container">
+        <h2 class="plans-title">Planos para todos os perfis</h2>
+        <div class="features-sub mb-5">Escolha o que mais combina com você.</div>
+        <div class="plans-grid">
+          <!-- Plano Básico -->
+          <div class="plan-card animate__animated animate__fadeInUp">
+            <div class="plan-name">Básico</div>
+            <div class="plan-price">R$ 0 <span style="font-size:.93rem; font-weight: 400;">/mês</span></div>
+            <div class="plan-desc">Controle financeiro essencial</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check-circle"></i>Controle de gastos e metas</li>
+              <li><i class="fas fa-check-circle"></i>Gráficos e relatórios básicos</li>
+              <li class="plan-feature-disabled"><i class="fas fa-times-circle"></i>Exportação avançada</li>
+              <li class="plan-feature-disabled"><i class="fas fa-times-circle"></i>Suporte premium</li>
+            </ul>
+          </div>
+          <!-- Plano Intermediário -->
+          <div class="plan-card animate__animated animate__fadeInUp animate__delay-1s">
+            <div class="plan-name">Intermediário</div>
+            <div class="plan-price">R$ 19,90 <span style="font-size:.93rem; font-weight: 400;">/mês</span></div>
+            <div class="plan-desc">Relatórios, gráficos e recursos avançados</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check-circle"></i>Tudo do Básico</li>
+              <li><i class="fas fa-check-circle"></i>Exportação PDF/Excel</li>
+              <li><i class="fas fa-check-circle"></i>Alertas e relatórios automáticos</li>
+              <li class="plan-feature-disabled"><i class="fas fa-times-circle"></i>Suporte premium</li>
+            </ul>
+          </div>
+          <!-- Plano Avançado -->
+          <div class="plan-card animate__animated animate__fadeInUp animate__delay-2s">
+            <div class="plan-name">Avançado</div>
+            <div class="plan-price">R$ 29,90 <span style="font-size:.93rem; font-weight: 400;">/mês</span></div>
+            <div class="plan-desc">Tudo do Intermediário + Suporte</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check-circle"></i>Tudo do Intermediário</li>
+              <li><i class="fas fa-check-circle"></i>Suporte premium 24h</li>
+              <li><i class="fas fa-check-circle"></i>Consultoria financeira personalizada</li>
+              <li><i class="fas fa-check-circle"></i>Prioridade em novidades</li>
+            </ul>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <a href="login.php" class="btn btn-main btn-lg px-4">Quero experimentar</a>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Feedbacks -->
+    <section class="feedback-section" id="feedbacks">
+      <div class="container">
+        <div class="feedback-title">Quem usa GreenCash recomenda</div>
+        <div class="feedback-sub">Veja como transformar o controle do seu dinheiro fez diferença na vida de milhares de pessoas:</div>
+        <div class="feedback-cards">
+          <div class="feedback-card">
+            <div class="feedback-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <div class="feedback-text">
+              "Nunca consegui juntar dinheiro, mas com o GreenCash ficou fácil enxergar para onde vai cada centavo. Recomendo demais!"
+            </div>
+            <div class="feedback-author">Joana M., Fortaleza</div>
+          </div>
+          <div class="feedback-card">
+            <div class="feedback-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <div class="feedback-text">
+              "Os gráficos são lindos e objetivos. Bati minha meta de viagem em 7 meses!"
+            </div>
+            <div class="feedback-author">Pedro H., São Paulo</div>
+          </div>
+          <div class="feedback-card">
+            <div class="feedback-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <div class="feedback-text">
+              "O app me lembra dos boletos e ainda mostra quanto posso gastar. Nunca mais fiquei no vermelho."
+            </div>
+            <div class="feedback-author">Maria L., Curitiba</div>
+          </div>
+          <div class="feedback-card">
+            <div class="feedback-stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <div class="feedback-text">
+              "A consultoria valeu cada centavo. Hoje tenho reserva de emergência e invisto melhor."
+            </div>
+            <div class="feedback-author">Carlos F., Salvador</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Sobre nós -->
+    <section id="about" class="about-section">
+      <div class="container">
+        <h2 class="features-title" style="margin-bottom:18px;">Sobre nós</h2>
+        <div class="features-sub" style="margin-bottom:28px;">Conheça a equipe e o propósito por trás do GreenCash</div>
+        <div class="row align-items-center">
+          <div class="col-lg-7 mb-4 mb-lg-0">
+            <div style="font-size:1.01rem; color:#356b4d;">
+              <p>
+                <strong>O GreenCash nasceu do desejo de simplificar a vida financeira das pessoas.</strong> Nossa equipe é formada por apaixonados por tecnologia, educação financeira e design, com o objetivo de democratizar o acesso ao controle do dinheiro.
+              </p>
+              <p>
+                Desde 2024, desenvolvemos uma plataforma intuitiva, segura e acessível, focada em ajudar você a organizar as finanças, bater metas e realizar sonhos. Acreditamos que <b>cuidar do dinheiro não precisa ser complicado</b> — basta ter as ferramentas certas e o suporte necessário.
+              </p>
+              <p>
+                <b>Nossa missão</b> é empoderar cada usuário a tomar decisões financeiras melhores, com autonomia e tranquilidade. Construímos o GreenCash ouvindo nossos clientes e evoluindo junto com suas necessidades.
+              </p>
+              <ul style="margin-left:0; padding-left:1.1em;">
+                <li>Equipe 100% brasileira, com atendimento humano e ágil</li>
+                <li>Compromisso com privacidade, ética e transparência</li>
+                <li>Atualizações frequentes e melhorias constantes</li>
+              </ul>
+              <p>
+                Seja bem-vindo(a) à nova era do controle financeiro.<br>
+                <strong>Conte com a gente!</strong>
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-5 text-center">
+            <img src="equipe.png" alt="Equipe GreenCash" class="img-fluid rounded shadow" style="max-width:260px;">
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Footer -->
+    <footer class="footer-modern-aligned">
+      <div class="container py-5">
+        <div class="row g-4 align-items-center justify-content-between">
+          <!-- Logo & Missão -->
+          <div class="col-12 col-md-4 text-center text-md-start">
+            <a class="navbar-brand" href="#">
+              <img src="logo.png" alt="GreenCash logo" class="gc-logo-navbar">
+            </a>
+            <p class="footer-desc" style="margin-left: 0; margin-top: 10px; color: #2e6346;">
+              O jeito inteligente de cuidar do seu dinheiro.
+            </p>
+            <address class="footer-address mb-0 small text-muted" style="font-style:normal;">
+              R. Arno Waldemar Döhler, 957<br>
+              Zona Industrial Norte<br>
+              Joinville - SC<br>
+              89219-510
+            </address>
+          </div>
+          <!-- Navegação Central -->
+          <div class="col-12 col-md-4 text-center my-2">
+            <nav class="footer-links d-flex justify-content-center gap-4 mb-3">
+              <a href="#features">Recursos</a>
+              <a href="#plans">Planos</a>
+              <a href="#feedbacks">Feedbacks</a>
+              <a href="#about">Sobre nós</a>
+            </nav>
+            <div class="footer-social mt-3 d-flex justify-content-center gap-3">
+              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+              <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+          </div>
+          <!-- Contato & Direitos -->
+          <div class="col-12 col-md-4 text-center text-md-end mt-3 mt-md-0">
+            <div class="small mb-2">
+              <span class="fw-bold">Atendimento:</span> <a href="mailto:contato@greencash.com.br" class="footer-contact">contato@greencash.com.br</a><br>
+              <span class="fw-bold">Tel:</span> <a href="tel:+5511999999999" class="footer-contact">+55 47 99999-9999</a>
+            </div>
+            <div class="small text-muted mt-2">
+              © 2025 GreenCash.<br>Todos os direitos reservados.
+            </div>
+          </div>
+        </div>
+        <hr class="footer-hr my-4">
+        <div class="row">
+          <div class="col-12 text-center small footer-mini-copy text-muted">
+            GreenCash Brasil — Segurança e transparência para sua vida financeira.
+          </div>
+        </div>
+      </div>
+    </footer>
+  
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Animated counters
+      function animateCounter(el, target, duration, prefix = '', suffix = '', decimal = false, currency = false) {
+        let start = 0;
+        let startTime = null;
+        function animateStep(timestamp) {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          let value = Math.floor(progress * (target - start) + start);
+          if (decimal) value = (progress * (target - start) + start).toFixed(1);
+          if (currency) {
+            let val = Math.floor(progress * (target - start) + start);
+            value = 'R$ ' + val.toLocaleString('pt-BR') + '+';
+          }
+          el.textContent = prefix + value + suffix;
+          if (progress < 1) {
+            requestAnimationFrame(animateStep);
+          } else {
+            if (currency) el.textContent = 'R$ ' + target.toLocaleString('pt-BR') + '+';
+            if (decimal) el.textContent = target.toFixed(1);
+          }
+        }
+        requestAnimationFrame(animateStep);
+      }
+      window.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.counter').forEach(function(el) {
+          const target = parseFloat(el.getAttribute('data-target'));
+          const decimal = el.hasAttribute('data-decimal');
+          const currency = el.hasAttribute('data-currency');
+          animateCounter(el, target, 1500, '', '', decimal, currency);
+        });
+      });
+      // Smooth scroll for all anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          if(href.length > 1 && document.querySelector(href)) {
+            e.preventDefault();
+            document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    </script>
+  </body>
+  </html>
