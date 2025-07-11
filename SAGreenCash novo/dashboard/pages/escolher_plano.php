@@ -580,10 +580,10 @@ if (!isset($_SESSION["usuario"])) {
         <div class="floating-shape shape-3"></div>
     </div>
 
-    <!-- Back Button -->
-    <button class="back-button" onclick="window.history.back()" title="Voltar">
-        <span class="material-symbols-rounded">arrow_back</span>
-    </button>
+<!-- Back Button -->
+<button class="back-button" onclick="window.location.href='login.php'" title="Voltar">
+    <span class="material-symbols-rounded">arrow_back</span>
+</button>
 
     <!-- Main Container -->
     <div class="main-container">
@@ -739,53 +739,48 @@ if (!isset($_SESSION["usuario"])) {
             </div>
 
             <form id="addCardForm">
-                <input type="hidden" id="selectedPlano" name="plano" value="">
-                
-                <div class="form-group">
-                    <label for="cardNumber" class="form-label">Número do Cartão</label>
-                    <input type="text" class="form-input" id="cardNumber" name="numero" placeholder="**** **** **** ****" required autocomplete="cc-number">
-                </div>
+    <input type="hidden" id="selectedPlano" name="plano" value="">
+    
+    <div class="form-group">
+        <label for="cardNumber" class="form-label">Número do Cartão</label>
+        <input type="text" class="form-input" id="cardNumber" name="numero" placeholder="**** **** **** ****" required autocomplete="cc-number">
+    </div>
 
-                <div class="form-group">
-                    <label for="cardHolder" class="form-label">Nome do Titular</label>
-                    <input type="text" class="form-input" id="cardHolder" name="titular" placeholder="Nome completo" required autocomplete="cc-name">
-                </div>
+    <div class="form-group">
+        <label for="cardHolder" class="form-label">Nome do Titular</label>
+        <input type="text" class="form-input" id="cardHolder" name="titular" placeholder="Nome completo" required autocomplete="cc-name">
+    </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="cardExpiry" class="form-label">Validade</label>
-                        <input type="text" class="form-input" id="cardExpiry" name="validade" placeholder="MM/AA" required autocomplete="cc-exp">
-                    </div>
-                    <div class="form-group">
-                        <label for="cardCVV" class="form-label">CVV</label>
-                        <input type="text" class="form-input" id="cardCVV" name="cvv" placeholder="123" maxlength="4" required autocomplete="cc-csc">
-                    </div>
-                </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label for="cardExpiry" class="form-label">Validade</label>
+            <input type="text" class="form-input" id="cardExpiry" name="validade" placeholder="MM/AA" required autocomplete="cc-exp">
+        </div>
+        <div class="form-group">
+            <label for="cardCVV" class="form-label">CVV</label>
+            <input type="text" class="form-input" id="cardCVV" name="cvv" placeholder="123" maxlength="4" required autocomplete="cc-csc">
+        </div>
+    </div>
 
-                <div class="form-group">
-                    <label for="salary" class="form-label">Salário</label>
-                    <input type="number" class="form-input" id="salary" name="salario" placeholder="Ex.: 2000" required min="0">
-                </div>
+    <div class="form-group">
+        <label for="creditLimit" class="form-label">Limite do Cartão</label>
+        <input type="number" class="form-input" id="creditLimit" name="limite" placeholder="Ex.: 10000" required min="0">
+    </div>
 
-                <div class="form-group">
-                    <label for="creditLimit" class="form-label">Limite do Cartão</label>
-                    <input type="number" class="form-input" id="creditLimit" name="limite" placeholder="Ex.: 10000" required min="0">
-                </div>
+    <div class="form-group">
+        <label for="cardType" class="form-label">Bandeira do Cartão</label>
+        <select class="form-select" id="cardType" name="tipo" required>
+            <option value="Mastercard" selected>MasterCard</option>
+            <option value="Visa">Visa</option>
+            <option value="AmericanExpress">American Express</option>
+            <option value="Discover">Discover</option>
+        </select>
+    </div>
 
-                <div class="form-group">
-                    <label for="cardType" class="form-label">Bandeira do Cartão</label>
-                    <select class="form-select" id="cardType" name="tipo" required>
-                        <option value="Mastercard" selected>MasterCard</option>
-                        <option value="Visa">Visa</option>
-                        <option value="AmericanExpress">American Express</option>
-                        <option value="Discover">Discover</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="submit-button">
-                    Confirmar Assinatura
-                </button>
-            </form>
+    <button type="submit" class="submit-button">
+        Confirmar Assinatura
+    </button>
+</form>
         </div>
     </div>
 
@@ -850,46 +845,70 @@ if (!isset($_SESSION["usuario"])) {
             this.value = this.value.replace(/\D/g, "").slice(0, 4);
         });
 
-        document.getElementById("salary").addEventListener("input", function (e) {
-            this.value = this.value.replace(/\D/g, "");
-        });
-
-        document.getElementById("creditLimit").addEventListener("input", function (e) {
-            this.value = this.value.replace(/\D/g, "");
-        });
 
         // Form submission
         document.getElementById("addCardForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            
-            const dados = {
-                plano: document.getElementById('selectedPlano').value,
-                numero: document.getElementById('cardNumber').value.replace(/\s/g, ''),
-                titular: document.getElementById('cardHolder').value,
-                validade: document.getElementById('cardExpiry').value,
-                cvv: document.getElementById('cardCVV').value,
-                salario: document.getElementById('salary').value,
-                limite: document.getElementById('creditLimit').value,
-                tipo: document.getElementById('cardType').value
-            };
+    e.preventDefault();
+    
+    // Verifique se todos os campos estão preenchidos
+    const requiredFields = ['cardNumber', 'cardHolder', 'cardExpiry', 'cardCVV', 'creditLimit', 'cardType'];
+    let isValid = true;
+    
+    requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (!field.value.trim()) {
+            field.style.borderColor = 'red';
+            isValid = false;
+        } else {
+            field.style.borderColor = '';
+        }
+    });
 
-            fetch('plano_assinar.php', {
-                method: 'POST',
-                body: new URLSearchParams(dados)
-            })
-            .then(res => res.json())
-            .then(resp => {
-                if (resp.sucesso) {
-                    document.getElementById('modal-sucesso-plano').style.display = 'flex';
-                    setTimeout(() => window.location.href = 'dashboard.php', 1800);
-                } else {
-                    alert('Erro ao assinar plano');
-                }
-            })
-            .catch(() => {
-                alert('Erro ao processar o pagamento. Tente novamente.');
-            });
-        });
+    if (!isValid) {
+        alert('Por favor, preencha todos os campos obrigatórios!');
+        return;
+    }
+
+    // Prepara os dados para envio
+    const dados = {
+        plano: document.getElementById('selectedPlano').value,
+        numero: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+        titular: document.getElementById('cardHolder').value,
+        validade: document.getElementById('cardExpiry').value,
+        cvv: document.getElementById('cardCVV').value,
+        limite: document.getElementById('creditLimit').value,
+        tipo: document.getElementById('cardType').value
+    };
+
+    // Debug: Mostra os dados no console antes de enviar
+    console.log('Dados sendo enviados:', dados);
+
+    fetch('plano_assinar.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(dados)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro na rede');
+        }
+        return response.json();
+    })
+    .then(resp => {
+        if (resp.sucesso) {
+            document.getElementById('modal-sucesso-plano').style.display = 'flex';
+            setTimeout(() => window.location.href = 'dashboard.php', 1800);
+        } else {
+            alert('Erro ao assinar plano: ' + (resp.msg || 'Erro desconhecido'));
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao processar o pagamento. Verifique o console para detalhes.');
+    });
+});
     </script>
 </body>
 </html>

@@ -112,6 +112,8 @@ CREATE TABLE IF NOT EXISTS despesas (
   pago TINYINT DEFAULT 0,
   cartao_id INT NULL,
   cartao_numero VARCHAR(24) NULL,
+  parcelas INT DEFAULT 1,
+  data_pagamento DATETIME,
   excluido TINYINT(1) DEFAULT 0,
   origem_pagamento VARCHAR(10) DEFAULT NULL,  -- <== NOVO CAMPO
   data DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -128,6 +130,8 @@ CREATE TABLE IF NOT EXISTS planos (
   realizado TINYINT DEFAULT 0,
   cartao_id INT NULL,
   cartao_numero VARCHAR(24) NULL,
+  parcelas INT DEFAULT 1,
+  data_realizacao DATETIME,
   excluido TINYINT(1) DEFAULT 0,
   origem_pagamento VARCHAR(10) DEFAULT NULL,  -- <== NOVO CAMPO
   data DATETIME DEFAULT CURRENT_TIMESTAMP,

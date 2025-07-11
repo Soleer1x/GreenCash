@@ -274,20 +274,7 @@ function navActive($file) {
             <div class="col-xl-6">
               <div class="row">
                 <div class="col-md-6 col-6">
-                  <!-- Salário -->
-                  <div class="card">
-                    <div class="card-header mx-4 p-3 text-center">
-                      <div class="icon icon-shape icon-lg bg-gradient-dark shadow text-center border-radius-lg">
-                        <i class="material-symbols-rounded opacity-10">account_balance</i>
-                      </div>
-                    </div>
-                    <div class="card-body pt-0 p-3 text-center">
-                      <h6 class="text-center mb-0">Salário</h6>
-                      <span class="text-xs">Cartão Atual</span>
-                      <hr class="horizontal dark my-3">
-                      <h5 class="mb-0" id="salaryValue">+$0</h5>
-                    </div>
-                  </div>
+                  <!-- Espaço removido (antes era para salário) -->
                 </div>
                 <div class="col-md-6 col-6">
                   <!-- Tipo de Cartão -->
@@ -382,10 +369,6 @@ function navActive($file) {
               <div class="mb-3">
                 <label for="cardCVV" class="form-label" style="color:#43a047;">Código de Segurança (CVV)</label>
                 <input type="text" class="form-control" id="cardCVV" placeholder="Ex.: 123" maxlength="4" required>
-              </div>
-              <div class="mb-3">
-                <label for="salary" class="form-label" style="color:#43a047;">Seu Salário</label>
-                <input type="number" class="form-control" id="salary" placeholder="Ex.: 2000" required>
               </div>
               <div class="mb-3">
                 <label for="creditLimit" class="form-label" style="color:#43a047;">Limite do Cartão</label>
@@ -529,7 +512,6 @@ function preencherCartaoPrincipal(cartao) {
   const mainCardLogo = document.getElementById("mainCardLogo");
   mainCardLogo.src = logos[cartao.tipo] || "../assets/img/logos/default.png";
   mainCardLogo.alt = cartao.tipo;
-  document.getElementById("salaryValue").textContent = `+$${cartao.salario}`;
   document.getElementById("cardTypeLabel").textContent = "Limite do Cartão";
   document.getElementById("cardTypeDescription").textContent = cartao.tipo;
   document.getElementById("cardTypeAmount").textContent = `+$${cartao.limite}`;
@@ -542,7 +524,6 @@ function limparCartaoPrincipal() {
   document.getElementById("mainCardCVV").textContent = "***";
   document.getElementById("mainCardLogo").src = "";
   document.getElementById("mainCardLogo").alt = "";
-  document.getElementById("salaryValue").textContent = "+$0";
   document.getElementById("cardTypeLabel").textContent = "Tipo do Cartão";
   document.getElementById("cardTypeDescription").textContent = "Cartão não adicionado";
   document.getElementById("cardTypeAmount").textContent = "+$0";
@@ -564,7 +545,6 @@ function editarCartao(id) {
         document.getElementById('cardHolder').value = cartao.titular;
         document.getElementById('cardExpiry').value = cartao.validade;
         document.getElementById('cardCVV').value = cartao.cvv;
-        document.getElementById('salary').value = cartao.salario;
         document.getElementById('creditLimit').value = cartao.limite;
         document.getElementById('cardType').value = cartao.tipo;
         document.getElementById("addCardModalLabel").textContent = "Editar Cartão";
@@ -596,7 +576,6 @@ document.getElementById("addCardForm").addEventListener("submit", function (e) {
     titular: form.cardHolder.value,
     validade: form.cardExpiry.value,
     cvv: form.cardCVV.value,
-    salario: form.salary.value,
     limite: form.creditLimit.value,
     tipo: form.cardType.value,
     principal: 1
@@ -690,9 +669,6 @@ document.getElementById("cardExpiry").addEventListener("input", function (e) {
 document.getElementById("cardCVV").addEventListener("input", function (e) {
   let val = this.value.replace(/\D/g, "");
   this.value = val.slice(0, 3);
-});
-document.getElementById("salary").addEventListener("input", function (e) {
-  this.value = this.value.replace(/\D/g, "");
 });
 document.getElementById("creditLimit").addEventListener("input", function (e) {
   this.value = this.value.replace(/\D/g, "");
@@ -910,7 +886,6 @@ function preencherCartaoPrincipal(cartao) {
   const mainCardLogo = document.getElementById("mainCardLogo");
   mainCardLogo.src = logos[cartao.tipo] || "../assets/img/logos/default.png";
   mainCardLogo.alt = cartao.tipo;
-  document.getElementById("salaryValue").textContent = `+$${cartao.salario}`;
   document.getElementById("cardTypeLabel").textContent = "Limite do Cartão";
   document.getElementById("cardTypeDescription").textContent = cartao.tipo;
   document.getElementById("cardTypeAmount").textContent = `+$${cartao.limite}`;

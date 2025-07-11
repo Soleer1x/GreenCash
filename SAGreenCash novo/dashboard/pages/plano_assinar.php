@@ -4,9 +4,12 @@ header('Content-Type: application/json');
 require 'db.php';
 
 if (!isset($_SESSION["usuario"])) {
-    echo json_encode(['sucesso' => false, 'msg' => 'não logado']);
+    echo json_encode(['sucesso' => false, 'msg' => 'Não autenticado']);
     exit;
 }
+
+// Debug: Registrar os dados recebidos
+error_log("Dados recebidos: " . print_r($_POST, true));
 
 $userId   = $_SESSION["usuario"]["id"];
 $plano    = $_POST['plano']    ?? '';
@@ -15,27 +18,50 @@ $titular  = $_POST['titular']  ?? '';
 $validade = $_POST['validade'] ?? '';
 $cvv      = $_POST['cvv']      ?? '';
 $tipo     = $_POST['tipo']     ?? '';
-$salario  = $_POST['salario']  ?? '';
 $limite   = $_POST['limite']   ?? '';
 
-// Validação simples dos dados
-if (!$plano || !$numero || !$titular || !$validade || !$cvv || !$tipo || !$salario || !$limite) {
-    echo json_encode(['sucesso' => false, 'msg' => 'Dados incompletos']);
-    exit;
+// Validação dos dados
+$camposObrigatorios = [
+    'plano' => $plano,
+    'numero' => $numero,
+    'titular' => $titular,
+    'validade' => $validade,
+    'cvv' => $cvv,
+    'tipo' => $tipo,
+    'limite' => $limite
+];
+
+foreach ($camposObrigatorios as $campo => $valor) {
+    if (empty($valor)) {
+        echo json_encode(['sucesso' => false, 'msg' => "O campo $campo é obrigatório"]);
+        exit;
+    }
 }
 
-// (Opcional) Verifica se o usuário já tem um cartão principal, e define principal=0 para os outros
-$conn->query("UPDATE cartoes SET principal=0 WHERE usuario_id=$userId");
+try {
+    // Inicia transação
+    $conn->begin_transaction();
 
-// Salva o cartão
-$stmt = $conn->prepare("INSERT INTO cartoes (usuario_id, numero, titular, validade, cvv, tipo, salario, limite, principal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)");
-$stmt->bind_param("issssssi", $userId, $numero, $titular, $validade, $cvv, $tipo, $salario, $limite);
-$stmt->execute();
+    // Define todos os cartões como não principais
+    $conn->query("UPDATE cartoes SET principal=0 WHERE usuario_id=$userId");
 
-// Atualiza o plano do usuário
-$conn->query("UPDATE usuarios SET plano='$plano' WHERE id=$userId");
+    // Insere o novo cartão
+    $stmt = $conn->prepare("INSERT INTO cartoes (usuario_id, numero, titular, validade, cvv, tipo, limite, principal) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
+    $stmt->bind_param("isssssi", $userId, $numero, $titular, $validade, $cvv, $tipo, $limite);
+    $stmt->execute();
 
-// Atualiza o plano na SESSION para efeito imediato no menu e controle de acesso
-$_SESSION["usuario"]["plano"] = $plano;
+    // Atualiza o plano do usuário
+    $conn->query("UPDATE usuarios SET plano='$plano' WHERE id=$userId");
 
-echo json_encode(['sucesso' => true]);
+    // Atualiza a sessão
+    $_SESSION["usuario"]["plano"] = $plano;
+
+    // Confirma a transação
+    $conn->commit();
+
+    echo json_encode(['sucesso' => true]);
+} catch (Exception $e) {
+    $conn->rollback();
+    error_log("Erro ao assinar plano: " . $e->getMessage());
+    echo json_encode(['sucesso' => false, 'msg' => 'Erro no servidor: ' . $e->getMessage()]);
+}
