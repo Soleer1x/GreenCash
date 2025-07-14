@@ -2755,7 +2755,25 @@ function fecharModalPagar() {
   document.getElementById("modal-pagar").style.display = "none";
 }
 function finalizarPagamento(origem) {
-  // origem: 'banco' ou 'total'
+  if (origem === 'banco') {
+    // Aqui pega o valor da despesa/plano a pagar/realizar
+    // Você já tem o id do item em pagarId e o tipo em pagarTipo
+    // Então, busque o valor desse item (exemplo simples, você pode adaptar):
+
+    fetch(`financas.php?action=get_${pagarTipo}&id=${pagarId}`)
+      .then(resp => resp.json())
+      .then(item => {
+        const valorTotal = parseFloat(item.valor);
+        abrirTelaParcelas(valorTotal); // abre o modal de parcelas
+        fecharModalPagar();
+        // Guarde pagarId e pagarTipo para uso ao confirmar as parcelas!
+        window._pagamentoItemId = pagarId;
+        window._pagamentoItemTipo = pagarTipo;
+      });
+    return;
+  }
+
+  // Se não for banco, faz o pagamento direto como antes
   fetch(`financas.php?action=${pagarTipo==='despesa'?'pagar_despesa':'realizar_plano'}&id=${pagarId}&origem=${origem}`, { method: "POST" })
     .then(resp => resp.json())
     .then(res => {
@@ -3044,6 +3062,91 @@ document.getElementById("planos-container").appendChild(div);
     </div>
   </div>
 </div>
+
+<!-- Modal de Parcelamento -->
+<div class="modal fade" id="modalParcelas" tabindex="-1" aria-labelledby="modalParcelasLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header" style="background:#43a047;color:#fff;">
+        <h5 class="modal-title" id="modalParcelasLabel">Escolha o Parcelamento</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <label for="selectParcelas" class="form-label mb-2">Número de parcelas:</label>
+        <select id="selectParcelas" class="form-select mb-3"></select>
+        <div id="parcelasResumo" class="mb-3 fw-bold text-success"></div>
+        <button type="button" class="btn btn-success w-100" onclick="confirmarPagamentoParcelado()">Confirmar Pagamento</button>
+        <button type="button" class="btn btn-outline-secondary w-100 mt-2" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #modalParcelas .modal-content {
+  border-radius: 18px;
+  box-shadow: 0 8px 32px #43a04733;
+  background: #fff;
+}
+#modalParcelas .modal-header {
+  border-bottom: none;
+}
+#modalParcelas .form-label {
+  font-weight: 600;
+  color: #1976d2;
+}
+#modalParcelas .btn-success {
+  background: linear-gradient(90deg, #43a047 60%, #388e3c 100%);
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 12px 0;
+}
+#modalParcelas .btn-outline-secondary {
+  border-radius: 8px;
+  font-weight: 600;
+}
+#parcelasResumo {
+  font-size: 1.07em;
+}
+</style>
+
+<script>
+  // Chame esta função ao clicar em "Saldo em Banco (Cartão)"
+function abrirTelaParcelas(valorTotal) {
+  const maxParcelas = 12;
+  const select = document.getElementById('selectParcelas');
+  select.innerHTML = "";
+  for(let i=1;i<=maxParcelas;i++){
+    select.innerHTML += `<option value="${i}">${i}x de R$ ${(valorTotal/i).toFixed(2)}</option>`;
+  }
+  select.value = 1;
+  select.onchange = function(){
+    document.getElementById('parcelasResumo').textContent = 
+      `Pagamento em ${this.value}x de R$ ${(valorTotal/this.value).toFixed(2)}`;
+  };
+  select.onchange();
+  const modal = new bootstrap.Modal(document.getElementById('modalParcelas'));
+  modal.show();
+}
+
+// Função chamada ao confirmar o parcelamento
+function confirmarPagamentoParcelado() {
+  const parcelas = document.getElementById('selectParcelas').value;
+  const id = window._pagamentoItemId;
+  const tipo = window._pagamentoItemTipo;
+
+  fetch(`financas.php?action=${tipo==='despesa'?'pagar_despesa':'realizar_plano'}&id=${id}&origem=banco&parcelas=${parcelas}`, { method: "POST" })
+    .then(resp => resp.json())
+    .then(res => {
+      if (res.success) {
+        bootstrap.Modal.getInstance(document.getElementById('modalParcelas')).hide();
+        carregarFinancas();
+      } else {
+        alert("Erro ao concluir: " + (res.msg || ""));
+      }
+    });
+}
+</script>
   </body>
 
 </html>
